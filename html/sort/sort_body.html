@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style type="text/css">
+        #classify-list {
+            width: 4.5rem;
+            height: 100%;
+            background-color: #ffffff;
+            overflow-x: hidden;
+        }
+        #classify-list .aui-list {
+            overflow-y: scroll;
+        }
+        .aui-list .aui-list-item-title {
+            font-size: 0.6rem;
+        }
+        .aui-list .activeli {
+          background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <section class="aui-content" id="classify-list">
+        <ul class="aui-list aui-list-noborder">
+            <li class="aui-list-item" onclick="switchByIndex(0)">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">办公效率</div>
+                </div>
+            </li>
+            <li class="aui-list-item" onclick="switchByIndex(1)">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">职业发展</div>
+                </div>
+            </li>
+            <li class="aui-list-item" onclick="switchByIndex(2)">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">编程开发</div>
+                </div>
+            </li>
+            <li class="aui-list-item" onclick="switchByIndex(3)">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">产品和设计</div>
+                </div>
+            </li>
+            <li class="aui-list-item" onclick="switchByIndex(4)">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">生活方式</div>
+                </div>
+            </li>
+            <li class="aui-list-item" onclick="switchByIndex(5)">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">亲子教育</div>
+                </div>
+            </li>
+            <li class="aui-list-item" onclick="switchByIndex(6)">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">语言学习</div>
+                </div>
+            </li>
+        </ul>
+    </section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+        api.parseTapmode();
+        //var header = $api.byId('aui-header');
+        //$api.fixStatusBar(header);
+        //var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        var classifyListH = $api.offset($api.byId('classify-list')).w;
+        //document.getElementById("classify-list").style.height = api.winHeight-headerPos.h+"px";
+
+        //获取高度参数
+        /*var h_page = api.pageParam["h_page"];
+        var y_page = api.pageParam["y_page"];*/
+        /*
+        api.openFrame({
+            name: 'sort_frm',
+            url: './sort_frm.html',
+            bounces: false,
+            rect: {
+                x: classifyListH+5,
+                y: y_page,
+                w: api.winWidth-classifyListH-5,
+                h: h_page
+            },
+            opaque:true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        })
+        */
+
+    };
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+
+    //切换framegroup
+    function switchFrame(index) {
+        api.setFrameGroupIndex ({
+            name: 'sortgroup',
+            index:index,
+            scroll:true
+        });
+    }
+
+    //任意li切换
+    function randomSwitchLi(index) {
+        var lis = $api.domAll('.aui-list-item');
+        var i = 0, len = lis.length;
+        var currLi = lis[index];
+
+        for(i; i < len; i++) {
+          thisLi = lis[i];
+          if (thisLi == currLi) {
+            $api.addCls(thisLi, 'activeli');
+            continue;
+          } else {
+            $api.removeCls(thisLi, 'activeli');
+          }
+        }
+    }
+
+    //根据index切换
+    function switchByIndex (index) {
+      randomSwitchLi(index);
+      switchFrame(index);
+    }
+</script>
+</html>

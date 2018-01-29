@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>office efficiency</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+	<style>
+        .aui-card-list {
+            margin-bottom: 0;
+        }
+        .aui-btn{
+            background: #f5f5fa;
+            border-radius: 13px;
+        }
+	</style>
+</head>
+<body>
+    <section class="aui-content aui-padded-l-5 aui-padded-r-10 aui-padded-t-5">
+      <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-header">
+              办公软件
+              <i class="aui-iconfont aui-icon-right"></i>
+            </li>
+            <li class="aui-list-item">
+              <div class="aui-row-padded">
+                <div class="aui-col-xs-3">
+                    <div class="aui-btn" onclick="openSortDetail(this)">PPT</div>
+                </div>
+                <div class="aui-col-xs-3">
+                    <div class="aui-btn" onclick="openSortDetail(this)">Excel</div>
+                </div>
+                <div class="aui-col-xs-3">
+                    <div class="aui-btn" onclick="openSortDetail(this)">Word</div>
+                </div>
+                <div class="aui-col-xs-3">
+                    <div class="aui-btn" onclick="openSortDetail(this)">Project</div>
+                </div>
+                <div class="aui-col-xs-3">
+                    <div class="aui-btn" onclick="openSortDetail(this)">Outlook</div>
+                </div>
+                <div class="aui-col-xs-3">
+                    <div class="aui-btn" onclick="openSortDetail(this)">Keynote</div>
+                </div>
+                <div class="aui-col-xs-3">
+                    <div class="aui-btn" onclick="openSortDetail(this)">更多软件</div>
+                </div>
+              </div>
+            </li>
+
+            <li class="aui-list-header">
+              工作效率
+              <i class="aui-iconfont aui-icon-right"></i>
+            </li>
+            <li class="aui-list-item">
+              <div class="aui-row-padded">
+                <div class="aui-col-xs-6">
+                    <div class="aui-btn" onclick="openSortDetail(this)">时间管理</div>
+                </div>
+                <div class="aui-col-xs-6">
+                    <div class="aui-btn" onclick="openSortDetail(this)">思维导图</div>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="aui-list-header">
+              电脑基础
+              <i class="aui-iconfont aui-icon-right"></i>
+            </li>
+            <li class="aui-list-item">
+              <div class="aui-row-padded">
+                <div class="aui-col-xs-6">
+                    <div class="aui-btn" onclick="openSortDetail(this)">基础操作</div>
+                </div>
+                <div class="aui-col-xs-6">
+                    <div class="aui-btn" onclick="openSortDetail(this)">常用工具</div>
+                </div>
+              </div>
+            </li>
+        </ul>
+      </div>
+
+    </section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+        api.parseTapmode();
+    };
+
+    //跳转专题列表
+    function openSortDetail(el) {
+
+        //获取点击btn的内容
+        var textbtn = $api.html(el);
+
+        api.openWin({
+            name: 'sort_detail',
+            url: './sort_detail.html',
+            pageParam: {
+                textbtn: textbtn
+            }
+        });
+
+    }
+</script>
+</html>

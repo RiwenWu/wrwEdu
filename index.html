@@ -1,99 +1,661 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
-    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="./css/api.css" />
-    <style type="text/css">
-    html,body{
-        height: 100%;
+    <link rel="stylesheet" type="text/css" href="./css/common.css" />
+
+    <style>
+
+    	/*.bottom_btn {
+    		float: left;
+    		width: 25%;
+    		color: #A5A5A5;
+    	}*/
+    	#footer {
+    		height: 56px;
+    		/*height: auto;*/
+			line-height: 55px;
+			background-color: #fff;
+			/*border-top: 1px solid #E8E8E8;*/
+    	}
+    	/*.bottom_btn > img {
+    		width: 30px;
+    	}
+		.bottom_btn > span {
+    		font-size: 12px;
+			position: relative;
+			bottom: -13px;
+			left: -34px;
+			display: inline;
+			color: #A5A5A5;
+    	}*/
+
+		ul {
+
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: flex;
+		}
+    	.wxbtn {
+    		background: url(./image/footer/bottombtn0101.png) no-repeat center 4px;
+    	}
+    	.txbtn {
+    		background: url(./image/footer/bottombtn0201.png) no-repeat center 4px;
+    	}
+    	.fxbtn {
+    		background: url(./image/footer/bottombtn0301.png) no-repeat center 4px;
+    	}
+    	.mebtn {
+    		background: url(./image/footer/bottombtn0401.png) no-repeat center 4px;
+    	}
+    	#footer li{
+    		-webkit-box-flex: 1;
+			-webkit-flex: 1;
+    		flex:1;
+    		height: 55px;
+    	}
+    	.bottom_btn {
+    		background-position-y: 4px;
+    		background-size: 30px;
+    		padding-top: 16px;
+			font-size: 12px;
+			color: #A5A5A5;
+			width: 99%;
+			height: 30px;
+    	}
+
+    	.activebtn0 {
+    		background: url(./image/footer/bottombtn0102.png) no-repeat center 4px;
+    	}
+    	.activebtn1 {
+    		background: url(./image/footer/bottombtn0202.png) no-repeat center 4px;
+    	}
+    	.activebtn2 {
+    		background: url(./image/footer/bottombtn0302.png) no-repeat center 4px;
+    	}
+    	.activebtn3 {
+    		background: url(./image/footer/bottombtn0402.png) no-repeat center 4px;
+    	}
+    	.activebtn {
+    		color:#F64C47;
+    		background-size: 30px;
+    	}
+		.bar_item_hover {
+			background: #000;
+		}
+
+		.topbar {background: #EBECF0; height:auto; border-bottom: 1px solid #DDDFE3;}
+		.btn_click {background: #DADDE0;}
+		.account_body {font-size: 20px; text-align: center; line-height: auto;}
+		.scrollbar {display: -webkit-box;/*必不可少*/ display: -webkit-flex; text-align: center; height: 40px; line-height: 40px;background: #EBECF0;font-size: 12px;position: relative;}
+		.flex1 {-webkit-box-flex:1;-webkit-flex: 1;flex:1;color: #339933;}
+		.indexbar {position: absolute;/*background: #0fc;*/width: 50%;height: 5px;left: 0px;bottom: 0px;-webkit-transition: 300ms;}
+		.redbox {background: #DB4646;width: 40px;height: 5px;position: relative;left: auto;right: auto; margin-left: auto; margin-right: auto;}
+    .search {
+        top: 8px;
+        bottom: 8px;
+        left: 8px;
+        right: 8px;
+        height: auto;
+        line-height: auto;
+        background-color: rgb(250, 102, 4);
+        border-radius: 34px;
+        color: rgb(253, 194, 155);
+        font-size: 14px;
     }
-    #wrap{
-        height: 100%;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-flex-flow: column;
-    }
-    #header{
-        text-align: center; 
-		background-color: #81a9c3; 
-		color: #fff;
-        width: 100%;
-    }
-    #header h1{
-        font-size: 20px; 
-		height: 44px; 
-		line-height: 44px; 
-		margin: 0em; 
-		color: #fff;
-    }
-    #main{
-        -webkit-box-flex: 1; 
-        -webkit-flex: 1;
-    }
-    #footer{
-        height: 30px; 
-		line-height: 30px;
-        background-color: #81a9c3; 
-        width: 100%;
-        text-align: center;
-    }
-    #footer h5{
-        color: white;
-    }
-    .con{
-		font-size: 28px; 
-		text-align: center;
-	}
+
+		/*推荐头部*/
+		.right_btn{padding: 7px 1px 1px 7px;}
+		#topbar_profile {height: 28px;}
+		#topbar_search {height: 28px;}
+		.btn_click {background: #DADDE0;}
+
+		.titlebar {display: none;}
+		.activebar {display: block;}
+		.bottomhover {background-color: #46494B;}
+		/* 热点头部 */
+		#topbar_refresh {width: 40px;padding:5px 10px;}
+		/* 本地刷新图标 */
+		#localrefresh {display:none;float: right; width: 40px; padding: 5px 10px;}
     </style>
 </head>
 <body>
     <div id="wrap">
-        <div id="header">
-            <h1>APICloud</h1>
+		<!-- 推荐头部 -->
+		<div id="recommandTitle" class="titlebar activebar">
+			<div class="topbar">
+          <div class="search" tapmode="btn_click" onclick="openNewWindow('search')">
+            <img src="./image/topbar_search.png" alt="" class="right_btn" id="topbar_search" >
+          </div>
+      </div>
+
+      <div class="scrollbar" id="scrollbarsort">
+        <div class="bar1 flex1" tapmode="btn_click" onclick="switchsort(0)">精品课</div>
+        <div class="bar2 flex1" tapmode="btn_click" onclick="switchsort(1)" id="matchwidthsort">线下课程</div>
+        <div class="indexbar" id="indexbarsort"><div class="redbox"></div></div>
+      </div>
+      <!--
+      <div class="home-search open-win" win="html/search">
+          <img src="./image/header/search_home.png">
+          <span>输入商户名、地点</span>
+      </div>
+    -->
+		</div>
+
+		<!-- 分类头部 -->
+		<div id="sortTitle" class="titlebar">
+			<div class="topbar">
+        <div class="search" tapmode="btn_click" onclick="openNewWindow('search')">
+          <img src="./image/topbar_search.png" alt="" class="right_btn" id="topbar_search" >
         </div>
+		  </div>
+      <!--
+		    <div class="scrollbar" id="scrollbarsort">
+		    	<div class="bar1 flex1" tapmode="btn_click" onclick="switchsort(0)">精选</div>
+		    	<div class="bar2 flex1" tapmode="btn_click" onclick="switchsort(1)" id="matchwidthsort">搞笑</div>
+		    	<div class="indexbar" id="indexbarsort"><div class="redbox"></div></div>
+		    </div>
+      -->
+		</div>
+
+		<!-- 我的学习头部 -->
+		<div id="myLearnTitle" class="titlebar">
+		</div>
+
+      <!--
+      <div class="scrollbar" id="scrollbar">
+        <div class="bar1 flex1" tapmode="btn_click" onclick="switchaccount(0)">缓存</div>
+        <div class="bar2 flex1" tapmode="btn_click" onclick="switchaccount(1)" id="matchwidth">本地</div>
+        <div class="indexbar" id="indexbar"><div class="redbox"></div></div>
+      </div>
+      -->
+
+
+    	<!-- 账号头部 -->
+    	<div id="accountTitle" class="titlebar">
+    	</div>
+
+
         <div id="main">
-                
+
         </div>
+
         <div id="footer">
-            <h5>Copyright &copy;<span id="year"></span> </h5>
+	        <ul>
+	        	<li tapmode="bottomhover" onclick="switchframe('recommand')">
+	        		<a class="bottom_btn wxbtn weixin activebtn activebtn0">首页</a>
+	        	</li>
+
+	        	<li tapmode="bottomhover" onclick="switchframe('sort')">
+	        		<a class="bottom_btn txbtn communicate">分类</a>
+	        	</li>
+
+	        	<li tapmode="bottomhover" onclick="switchframe('myLearn')">
+	        		<a class="bottom_btn fxbtn discover">我的学习</a>
+	        	</li>
+
+	        	<li tapmode="bottomhover" onclick="switchframe('account')">
+	        		<a class="bottom_btn mebtn home">账号</a>
+	        	</li>
+	        </ul>
         </div>
     </div>
 </body>
 <script type="text/javascript" src="./script/api.js"></script>
 <script type="text/javascript">
+	var recommandheader = $api.byId('recommandTitle');
+	var sortheader = $api.byId('sortTitle');
+	var myLearnheader = $api.byId('myLearnTitle');
+	var accountheader = $api.byId('accountTitle');
+    var recommandheader = $api.offset(recommandheader);
+
+
+    var main = $api.byId('main');
+    var mainPos = $api.offset(main);
+
+	var footer = $api.byId('footer');
+	var footerPos = $api.offset(footer);
+
+
+	function emptyopt () {}
+
+	function openNewWindow(type)
+	{
+		api.openWin({
+		    name: type,
+		    url: './html/'+type+'.html',
+		    pageParam: {},
+		    bounces: false,
+		    opaque: false,
+		    bgColor:  'rgba(255,255,255,0)',
+		    vScrollBarEnabled:false,
+		    hScrollBarEnabled:true,
+		    // animation: {
+		    //         type: 'flip',
+		    //         subType: 'from_bottom',
+		    //         duration: 500
+		    //     }
+	    });
+	}
+
+	// 随意切换按钮
+	function randomSwitchBtn(name, index)
+	{
+		var lis = $api.domAll('.bottom_btn');
+		var i = 0, len = lis.length;
+		var curLi = lis[index];
+
+		// api.alert({msg:len});
+		for(i; i<len; i++){
+			var thisLi = lis[i];
+			if(thisLi === curLi){
+				$api.addCls(thisLi,'activebtn');
+				$api.addCls(thisLi,'activebtn'+index);
+				continue;
+			}else{
+				if($api.hasCls(thisLi,'activebtn')){
+					$api.removeCls(thisLi,'activebtn');
+					$api.removeCls(thisLi,'activebtn'+i);
+				}
+			}
+		}
+
+		// 切换头部
+		var lis = $api.domAll('.titlebar');
+		var i = 0, len = lis.length;
+		var curLi = lis[index];
+
+		// api.alert({msg:len});
+		for(i; i<len; i++){
+			var thisLi = lis[i];
+			if(thisLi === curLi){
+				$api.addCls(thisLi,'activebar');
+				$api.addCls(thisLi,'activebar'+index);
+				continue;
+			}else{
+				if($api.hasCls(thisLi,'activebar')){
+					$api.removeCls(thisLi,'activebar');
+					$api.removeCls(thisLi,'activebar'+i);
+				}
+			}
+		}
+	}
+
+	// 隐藏所有的一级frame
+	function hideAllFrame()
+	{
+		// api.alert({msg:'1'});
+		api.setFrameAttr({
+		    name: 'myLearn',
+		    hidden:true
+		});
+		api.setFrameAttr({
+		    name: 'recommand',
+		    hidden:true
+		});
+    api.setFrameAttr({
+		    name: 'sort_body',
+		    hidden:true
+		});
+    api.setFrameGroupAttr({
+		    name: 'sortgroup',
+		    hidden:true
+		});
+		api.setFrameGroupAttr({
+		    name: 'accountgroup',
+		    hidden:true
+		});
+	}
+
+	// 自己修复ios显示frame的时候bug
+	// ios自己主动隐藏后，再open就不显示了
+	function showgroup(type)
+	{
+		api.setFrameGroupAttr({
+		    name: type + 'group',
+		    hidden:false
+		});
+	}
+
+	// 展示指定的frame
+	function showframe(type)
+	{
+		api.setFrameAttr({
+		    name: type,
+		    hidden:false
+		});
+	}
+
+	// 打开第一个、第三个frame
+	function openframeinstance( frame, marginTop)
+	{
+		api.openFrame ({
+	        name: frame,
+	        url: './html/' + frame +'/' + frame + '_body.html',
+	        rect:{
+	            x:0,
+	            y:marginTop,
+	            w:'auto',
+	            h:api.winHeight - marginTop - footerPos.h
+	        },
+	        pageParam: {name: 'test'},
+	        bounces: false,
+	        opaque: false,
+	        bgColor: 'rgba(70 , 70, 70,0)',
+	        vScrollBarEnabled:true,
+	        hScrollBarEnabled:true
+	    });
+	}
+
+	//  打开accountgroup
+	function openaccountgroupinstance()
+	{
+		// 在每次的时候再获取位置参数
+		// 否则之前display:none;高度一直为0
+		var accountheaderPos = $api.offset(accountheader);
+
+    var h_page = api.frameHeight-accountheaderPos.h-footerPos.h;
+
+		api.openFrameGroup ({
+			name: 'accountgroup',
+			background:'#FFFFFF',
+			scrollEnabled: true,
+			rect:{x:0, y:0, w:'auto', h:h_page},
+			index:0,
+			frames:
+			    [{
+			        name: 'cache',
+			        url: './html/account/account_body.html',
+			        pageParam:{
+                h_page: h_page
+              },
+			        bounces:false,
+			        opaque:true,
+			        bgColor: '#FFFFFF',
+			        vScrollBarEnabled:false,
+			        hScrollBarEnabled:false
+			    }]
+			},
+			function(ret, err){
+				var name = ret.name;
+				var index = ret.index;
+
+				//switchaccountindex(index);
+		});
+	}
+
+	//  打开sortgroup
+	function opensortinstance()
+	{
+		var sortheaderPos = $api.offset(sortheader);
+
+    api.openFrameGroup ({
+        name: 'sortgroup',
+        background:'#FFFFFF',
+  			scrollEnabled: true,
+        rect:{x:100, y:sortheaderPos.h, w:api.winWidth - 100, h:api.frameHeight-sortheaderPos.h-footerPos.h},
+        index: 0,
+        frames: [{
+            name: 'sort_officeEfficiency',
+            url: './html/sort/sort_officeEfficiency.html',
+            pageParam:{},
+            bounces:false,
+            opaque:true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        },{
+            name: 'sort_careerDevelopment',
+            url: './html/sort/sort_careerDevelopment.html',
+            pageParam:{},
+            bounces:false,
+            opaque:true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        },{
+            name: 'sort_careerDevelopment',
+            url: './html/sort/sort_programmingDevelopment.html',
+            pageParam:{},
+            bounces:false,
+            opaque:true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        },{
+            name: 'sort_productAndDesign',
+            url: './html/sort/sort_productAndDesign.html',
+            pageParam:{},
+            bounces:false,
+            opaque:true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        },{
+            name: 'sort_lifeStyle',
+            url: './html/sort/sort_lifeStyle.html',
+            pageParam:{},
+            bounces:false,
+            opaque:true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        },{
+            name: 'sort_parenting',
+            url: './html/sort/sort_parenting.html',
+            pageParam:{},
+            bounces:false,
+            opaque:true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        },{
+            name: 'sort_languageLearning',
+            url: './html/sort/sort_languageLearning.html',
+            pageParam:{},
+            bounces:false,
+            opaque:true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        }]
+    }, function(ret, err){
+        var name = ret.name;
+        var index = ret.index;
+    });
+
+    api.openFrame({
+        name: 'sort_body',
+        url: './html/sort/sort_body.html',
+        rect:{x:0, y:sortheaderPos.h, w:100, h:api.frameHeight-sortheaderPos.h-footerPos.h},
+        pageParam: {},
+        bounces: false,
+        opaque: true,
+        bgColor: '#FFFFFF',
+        vScrollBarEnabled:true,
+        hScrollBarEnabled:true
+    });
+	}
+
+	// 移动滑动块
+	function sliderbarCallback(id, num) {
+
+		// 得到背景元素的宽度
+	    // var width=parseInt(window.getComputedStyle($api.byId('matchwidth'),null).width);
+	    var width = parseInt(api.frameWidth / 2);
+	    // api.alert({msg:width});
+	    if(num!=0){
+	        num=width;
+	    }
+		// 移动背景元素的宽度  在index.html不能获得 account.html上面的dom，虽然是在同一个手机屏幕上
+	    $api.css($api.byId(id),
+	       "-webkit-transform:translate(" + num + "px,0)"
+	    );
+	}
+
+	// 切换离线头部的下标滑块
+	function switchaccountindex(index)
+	{
+		if (index === 0) {
+			var refresh = $api.dom('#localrefresh');
+			refresh.style.display = 'none';
+			sliderbarCallback('indexbar', 0);
+		}
+		else {
+			var refresh = $api.dom('#localrefresh');
+			refresh.style.display = 'inline-block';
+			sliderbarCallback('indexbar', 100);
+		}
+	}
+
+	// 切换热点头部的下标滑块
+	function switchsortindex(index)
+	{
+		if (index === 0) {
+			sliderbarCallback('indexbarsort', 0);
+		}
+		else {
+			sliderbarCallback('indexbarsort', 100);
+		}
+	}
+
+	// 根据点击切换离线framegroup
+	function switchaccount(index)
+	{
+		api.setFrameGroupIndex ({
+		    name: 'accountgroup',
+		    index:index,
+		    scroll:true
+		});
+
+		switchaccountindex(index);
+	}
+
+
+	// 根据点击切换热点framegroup
+	function switchsort(index)
+	{
+		api.setFrameGroupIndex ({
+		    name: 'sortgroup',
+		    index:index,
+		    scroll:true
+		});
+		switchsortindex(index);
+	}
+
+	// ===================================
+	// 响应底部按钮的切换frame
+	// ===================================
+	function switchframe(type)
+	{
+		switch(type)
+		{
+			case 'recommand':
+				randomSwitchBtn('recommand', 0);
+				hideAllFrame();
+				openframeinstance('recommand', recommandheader.h);
+				showframe('recommand');
+			break;
+			case 'sort':
+				randomSwitchBtn('sort', 1);
+				hideAllFrame();
+				opensortinstance();
+        showframe('sort_body');
+        showgroup('sort');
+			break;
+			case 'myLearn':
+				randomSwitchBtn('myLearn', 2);
+				hideAllFrame();
+				openframeinstance('myLearn', 0);
+				showframe('myLearn');
+			break;
+			case 'account':
+				randomSwitchBtn('account', 3);
+				hideAllFrame();
+				openaccountgroupinstance();
+				showgroup('account');
+			break;
+			default:
+				break;
+		}
+
+	}
+
+  //退出提示
+  function fnInitListener() {
+      var flag = false;
+      api.addEventListener({
+          name: 'keyback'
+      }, function(ret, err) {
+          if (false == flag) {
+              api.toast({
+                  msg: '再按一次退出',
+                  duration: 2000,
+                  location: 'bottom'
+              });
+              flag = true;
+              setTimeout(function() {
+                  flag = false;
+              }, 2000);
+          } else {
+              api.closeWidget({
+                  silent: true
+              });
+          }
+      });
+  }
+
+	// 完成首页初始化
     apiready = function(){
-		//输出Log，Log将显示在APICloud Studio控制台
-		console.log("Hello APICloud");
+    	// 设置ios7的标题栏字体变亮，全局用一个就行了
+    	api.setStatusBarStyle({
+		    style: 'dark'
+		  });
 
-        var header = $api.byId('header');
-        //适配iOS7+，Android4.4+状态栏沉浸式效果，详见config文档statusBarAppearance字段
-        $api.fixStatusBar(header);
-		//动态计算header的高度，因iOS7+和Android4.4+上支持沉浸式效果，
-		//因此header的实际高度可能为css样式中声明的44px加上设备状态栏高度
-		//其中，IOS状态栏高度为20px，Android为25px
-        var headerH = $api.offset(header).h;
-		//footer高度为css样式中声明的30px
-		var footerH = 30;
-		//frame的高度为当前window高度减去header和footer的高度
-		var frameH = api.winHeight - headerH - footerH;
-        api.openFrame({
-            name: 'main',
-            url: 'html/main.html',
-            bounces: true,
-            rect: {
-                x: 0,
-                y: headerH,
-                w: 'auto',
-                h: frameH
-            }
-        });
+		 recommandheader = $api.byId('recommandTitle');
+		 sortheader = $api.byId('sortTitle');
+		 myLearnheader = $api.byId('myLearnTitle');
+		 accountheader = $api.byId('accountTitle');
 
-        var year = $api.byId('year');
-        year.innerHTML = new Date().getFullYear();
 
+        var header = $api.dom('#recommandTitle .topbar');
+        var header2 = $api.dom('#sortTitle .topbar');
+        //var header3 = $api.dom('#myLearnTitle .topbar');
+        //var header4 = $api.dom('#accountTitle .topbar');
+		$api.fixStatusBar(header);
+		$api.fixStatusBar(header2);
+		//$api.fixStatusBar(header3);
+		//$api.fixStatusBar(header4);
+		 recommandheader = $api.offset(recommandheader);
+         main = $api.byId('main');
+         mainPos = $api.offset(main);
+
+		 footer = $api.byId('footer');
+		 footerPos = $api.offset(footer);
+
+		// 第一次进入打开 recommand body
+		api.openFrame ({
+	        name: 'recommand',
+	        url: './html/recommand/recommand_body.html',
+	        rect:{
+	            x:0,
+	            y:recommandheader.h,
+	            w:'auto',
+	            // h:'auto'
+	            h:api.winHeight-recommandheader.h -footerPos.h
+	        },
+	        pageParam: {name: 'test'},
+	        bounces: false,
+	        opaque: false,
+	        bgColor: 'rgba(70 , 70, 70,0)',
+	        vScrollBarEnabled:true,
+	        hScrollBarEnabled:true
+	    });
+
+      fnInitListener();
     };
 </script>
 </html>

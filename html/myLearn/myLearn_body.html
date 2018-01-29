@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <title>我的学习</title>
+
+  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+
+	<style>
+      header {
+        height: 170px;
+        border-bottom: solid 1px;
+      }
+      p {
+        font-size: 0.6rem;
+        color: #646464;
+      }
+      .aui-bar-nav {
+        background-color: #ffffff;
+      }
+      .aui-bar-nav .imgheader{
+        margin:30px auto;
+        height: 90px;
+        width: 90px;
+      }
+      .imgbody {
+        margin:200px auto;
+        height: 151px;
+        width: 206px;
+      }
+	</style>
+</head>
+
+<body>
+  <header class="aui-bar aui-bar-nav" id="aui-header">
+      <div class="imgheader">
+          <img src="../../image/myLearn/box_user_info_login.png" />
+      </div>
+  </header>
+  <section>
+    <div class="aui-tab" id="tab">
+        <div class="aui-tab-item aui-active">我的计划</div>
+        <div class="aui-tab-item">我的收藏</div>
+        <div class="aui-tab-item">我的下载</div>
+    </div>
+    <div class="imgbody">
+        <img src="../../image/myLearn/ico_user_login.png" />
+        <p>登录后多设备可同步学习进度</p>
+    </div>
+    <div class="aui-content-padded">
+
+    </div>
+  </section>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script>
+  apiready = function() {
+      api.parseTapmode();
+
+  }
+</script>
+</html>
