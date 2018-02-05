@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+<style>
+        html,body{
+            background-color: transparent !important;
+            height: 100%;
+        }
+        section {
+          width: 100%;
+          position: fixed;
+          left: 1px;
+          right: 1px;
+          bottom: 5px;
+          color: white;
+        }
+        .aui-range1 {
+          width: 70%;
+          margin-left: 5px;
+        }
+        img{
+          width: 20px;
+          height: 20px;
+        }
+    </style>
+<body onclick="showOrhide()">
+  <header class="aui-bar aui-bar-nav aui-bar-light" id="aui-header">
+      <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+          <span class="aui-iconfont aui-icon-left"></span>
+      </a>
+  </header>
+  <section class="">
+        <div class="aui-pull-left">
+              <img src="../image/video/ic_player_play.png"/>
+        </div>
+              <div class="aui-range1 aui-pull-left">
+                  <input type="range" class="aui-range1" value="30" max="100" min="1" step="1" id="range" />
+              </div>
+              <div class="aui-pull-left">
+                  <p>15:15/15:15</p>
+              </div>
+          <div class="aui-pull-right">
+              <img src="../image/video/ico_live_enter_full_screen.png"/>
+          </div>
+      </div>
+  </section>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+
+    };
+
+    function showOrhide() {
+      var header = $api.dom('header');
+      var section = $api.dom('section');
+
+      if($api.hasCls(header,'aui-hide') && $api.hasCls(section,'aui-hide')){
+        $api.removeCls(header, 'aui-hide');
+        $api.removeCls(section, 'aui-hide');
+      } else {
+        $api.addCls(header, 'aui-hide');
+        $api.addCls(section, 'aui-hide');
+      }
+
+    }
+
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

@@ -16,11 +16,53 @@
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
     apiready = function(){
-
+        videoPlayer = api.require('videoPlayer');
+        fnOpen();
+        openController();
     };
+
+    function fnOpen(){
+        videoPlayer.open({
+            rect:{
+                x:0,
+                y:0,
+                w:'auto',
+                h:400
+            },
+            autoPlay: true,
+            path: 'http://resource.apicloud.com/video/apicloud3.mp4',
+            fixed : true
+        }, function(ret, err){
+            if( !ret.status ){
+                alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
     function closeWin(){
         api.closeWin({
         });
+    }
+
+    function openController() {
+        api.openFrame({
+            name: 'video_controller',
+            url: './video_controller.html',
+            rect: {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: 400
+            },
+            pageParam: {
+                name: 'test'
+            },
+            bounces: false,
+            bgColor: 'rgba(0,0,0,0)',
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false
+        });
+
     }
 </script>
 </html>

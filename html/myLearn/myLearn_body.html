@@ -28,7 +28,7 @@
         width: 90px;
       }
       .imgbody {
-        margin:200px auto;
+        margin:250px auto;
         height: 151px;
         width: 206px;
       }
@@ -37,7 +37,7 @@
 
 <body>
   <header class="aui-bar aui-bar-nav" id="aui-header">
-      <div class="imgheader">
+      <div class="imgheader" tapmode onclick="openLogin()">
           <img src="../../image/myLearn/box_user_info_login.png" />
       </div>
   </header>
@@ -61,6 +61,17 @@
 <script>
   apiready = function() {
       api.parseTapmode();
+
+  }
+
+  function openLogin() {
+      api.openWin({
+          name: 'login',
+          url: '../login_win.html',
+          pageParam: {
+              name: 'test'
+          }
+      });
 
   }
 </script>

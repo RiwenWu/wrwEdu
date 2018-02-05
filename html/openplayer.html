@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<style>
+				section {
+					margin: 0 auto;
+				}
+		</style>
+	</head>
+	<body>
+		<section id="myElement">
+			Loading the player...
+		</section>
+		<section class="aui-bar">
+			<h1>asgasdfgasd</h1>
+		</section>
+		<section class="aui-grid aui-margin-b-15">
+			<div class="aui-row">
+        <div class="aui-col-xs-6">
+            <i class="aui-iconfont aui-icon-share"></i>
+            <div class="aui-grid-label">分享</div>
+        </div>
+        <div class="aui-col-xs-6">
+						<i class="aui-iconfont aui-icon-down"></i>
+            <div class="aui-grid-label">下载</div>
+        </div>
+    </div>
+		</section>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script src="../script/jwplayer.js"></script>
+	<script src="../script/jwplayer.html5.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			var framewidth = api.frameWidth;
+			jwplayer("myElement").setup({
+				file : "http://resource.apicloud.com/video/apicloud3.mp4",
+				image : "http://7xoual.com1.z0.glb.clouddn.com/apicloud/2e8b3d5bb4b9af0e48a86793a6f127c9.JPG",
+				width : framewidth,
+				height : 250,
+				autostart:true,
+				fullscreen:false,
+				events : {
+					onFullscreen : function(obj) {
+						if (obj.fullscreen) {
+							api.setScreenOrientation({
+							    orientation: 'landscape_left'
+							});
+						} else {
+							api.setScreenOrientation({
+							    orientation: 'portrait_up'
+							});
+						}
+					},
+					onPause : function(obj){
+						var aaa = jwplayer().getPosition();
+					}
+				}
+			});
+		}
+	</script>
+</html>

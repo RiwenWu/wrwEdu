@@ -68,7 +68,7 @@
             </li>
         </ul>
         <ul class="aui-list aui-list-in">
-            <li class="aui-list-item">
+            <li class="aui-list-item" onclick="openSettingPage()">
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-gear aui-text-info"></i>
                 </div>
@@ -92,6 +92,17 @@
 <script type="text/javascript" src="../../script/api.js" ></script>
 <script type="text/javascript">
     apiready = function () {
+    }
+
+    function openSettingPage() {
+        api.openWin({
+            name: 'settingPage',
+            url: './settingPage_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+
     }
 </script>
 </html>

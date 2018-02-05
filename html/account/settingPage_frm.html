@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style type="text/css">
+        .text-white {
+            color: #ffffff !important;
+        }
+        .aui-grid [class*=aui-col-] {
+            padding: 0.75rem 0;
+        }
+        .aui-list-item-inner .center {
+          margin: auto;
+          color: #03a9f4;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="aui-content">
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">仅Wi-Fi观看</div>
+                    <div class="aui-list-item-right">
+                        <input type="checkbox" class="aui-switch" checked>
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">仅Wi-Fi下载</div>
+                    <div class="aui-list-item-right">
+                        <input type="checkbox" class="aui-switch" checked>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">关于</div>
+                </div>
+            </li>
+        </ul>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" onclick="dologout()">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title center">退出</div>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+
+</body>
+<script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript">
+    apiready = function () {
+    }
+
+    function dologout() {
+        api.confirm({
+          title: '退出账号',
+          msg: '退出后，使用不同的账号登陆将会清楚你下载的内容，请慎重',
+          buttons: ['退出登陆', '取消']
+        }, function(ret, err) {
+            if(ret.buttonIndex == 2) {
+              window.console.log("------2");
+            }else if(ret.buttonIndex == 1) {
+              window.console.log("------1");
+            }
+        });
+    }
+
+    function logout() {
+      
+    }
+</script>
+</html>
