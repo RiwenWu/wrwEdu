@@ -69,16 +69,22 @@
           msg: '退出后，使用不同的账号登陆将会清楚你下载的内容，请慎重',
           buttons: ['退出登陆', '取消']
         }, function(ret, err) {
-            if(ret.buttonIndex == 2) {
-              window.console.log("------2");
-            }else if(ret.buttonIndex == 1) {
-              window.console.log("------1");
+            if(ret.buttonIndex == 1) {
+                $api.rmStorage('userId');
+                changeTologout();
             }
         });
     }
 
-    function logout() {
-      
+    function changeTologout() {
+        api.sendEvent({
+            name: 'changeTologout',
+            extra: {
+                key1: 'logout'
+            }
+        });
+
     }
+
 </script>
 </html>

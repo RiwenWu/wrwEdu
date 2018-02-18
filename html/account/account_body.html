@@ -28,18 +28,25 @@
                         <img src="../../image/account/default_head_circle.png" class="aui-img-round" >
                     </div>
                     <div class="aui-list-item-inner aui-list-item-arrow">
-                        <div class="aui-list-item-text aui-font-size-16">登陆/注册</div>
-                        <!--
-                        <div class="aui-list-item-text text-white aui-font-size-18">38dd4ef6d</div>
-                        <div class="aui-list-item-text text-white">
-                           <div><i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>152****0989</div>
+                        <!--未登陆时显示-->
+                        <div id="unlogin" class="aui-list-item-text aui-font-size-16">登陆/注册</div>
+                        <!--已登陆显示-->
+                        <div id="logined" class="aui-hide">
+                            <div class="aui-list-item-text aui-font-size-18">38dd4ef6d</div>
+                            <div class="aui-list-item-text">
+                               <div>
+                                   <i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>
+                                   <span class="aui-font-size-12">正在使用手机登陆</span>
+                                </div>
+                            </div>
                         </div>
-                      -->
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
     <section class="aui-content">
         <ul class="aui-list aui-list-in aui-margin-b-15">
             <li class="aui-list-item">
@@ -92,6 +99,52 @@
 <script type="text/javascript" src="../../script/api.js" ></script>
 <script type="text/javascript">
     apiready = function () {
+        api.parseTapmode();
+
+        //已登陆改变头部
+        if ($api.getStorage("userId") != undefined) {
+          changeHeader();
+        }
+        //注册监听事件
+        listenLoginEven();
+        listenLogoutEven();
+    }
+
+    //监听是否登陆
+    function listenLoginEven() {
+      api.addEventListener({
+          name: 'changeTologin'
+      }, function(ret, err) {
+          alert(JSON.stringify(ret.value));
+          changeHeader();
+        }
+      );
+    }
+
+      //监听是否登陆
+      function listenLogoutEven() {
+        api.addEventListener({
+            name: 'changeTologout'
+        }, function(ret, err) {
+            alert(JSON.stringify(ret.value));
+            changeHeader();
+          }
+        );
+      }
+
+
+    //根据登陆状态改变头部
+    function changeHeader() {
+            var unloginHeader = $api.byId('unlogin');
+            var loginedHeader = $api.byId('logined');
+
+            if ($api.hasCls(loginedHeader,'aui-hide')) {
+                $api.removeCls(loginedHeader,'aui-hide');
+                $api.addCls(unloginHeader,'aui-hide');
+            } else if($api.hasCls(unloginHeader,'aui-hide')) {
+                $api.removeCls(unloginHeader,'aui-hide');
+                $api.addCls(loginedHeader,'aui-hide');
+            }
     }
 
     function openSettingPage() {

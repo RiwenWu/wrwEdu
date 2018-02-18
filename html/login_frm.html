@@ -78,7 +78,7 @@
         var pwd = $api.byId('pwd').value;
 
         api.ajax({
-            url: 'http://172.168.1.100:8080/eduonline-app/login.json',
+            url: 'http://172.168.1.102:8080/eduonline-app/login.json',
             method: 'post',
             data: {
                 values: {
@@ -89,11 +89,22 @@
         },function(ret, err){
             if (ret.bool) {
                 closeWin();
-                $api.setStorage('islogin', true);
+                $api.setStorage("userId", ret.userId);
+                changeTologin();
             } else {
                 alert( JSON.stringify( ret.message ) );
             }
         });
+    }
+
+    function changeTologin() {
+        api.sendEvent({
+            name: 'changeTologin',
+            extra: {
+                key1: 'login'
+            }
+        });
+
     }
 
     function closeWin(){

@@ -36,11 +36,32 @@
 </head>
 
 <body>
-  <header class="aui-bar aui-bar-nav" id="aui-header">
+  <!-- 未登陆 -->
+  <section class="aui-bar aui-bar-nav" id="aui-header-unlogin">
       <div class="imgheader" tapmode onclick="openLogin()">
           <img src="../../image/myLearn/box_user_info_login.png" />
       </div>
-  </header>
+  </section>
+  <!-- 已登陆 -->
+  <section class="aui-content aui-hide" id="aui-header-login">
+      <div class="aui-list aui-media-list aui-list-noborder aui-bg-info">
+          <div class="aui-list-item aui-list-item-middle">
+              <div class="aui-media-list-item-inner ">
+                  <div class="aui-list-item-media" style="width:3.5rem;">
+                      <img src="../../image/myLearn/topbar_profile.png" class="aui-img-round" >
+                  </div>
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-text text-white">
+                         <div>
+                             <i class="aui-iconfont aui-icon-mobile aui-font-size-18"></i>
+                             <div class="aui-list-item-text text-white aui-font-size-14">152****0989</div>
+                         </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
   <section>
     <div class="aui-tab" id="tab">
         <div class="aui-tab-item aui-active">我的计划</div>
@@ -58,10 +79,53 @@
 
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
 <script>
   apiready = function() {
       api.parseTapmode();
+      //已登陆改变头部
+      if ($api.getStorage("userId") != undefined) {
+        changeHeader();
+      }
+      //注册监听事件
+      listenLoginEven();
+      listenLogoutEven();
+  }
 
+  //监听是否登陆
+  function listenLoginEven() {
+    api.addEventListener({
+        name: 'changeTologin'
+    }, function(ret, err) {
+        alert(JSON.stringify(ret.value));
+        changeHeader();
+      }
+    );
+  }
+
+  //监听是否登陆
+  function listenLogoutEven() {
+    api.addEventListener({
+        name: 'changeTologout'
+    }, function(ret, err) {
+        alert(JSON.stringify(ret.value));
+        changeHeader();
+      }
+    );
+  }
+
+  //根据登陆状态改变头部
+  function changeHeader() {
+          var unloginHeader = $api.byId('aui-header-unlogin');
+          var loginedHeader = $api.byId('aui-header-login');
+
+          if ($api.hasCls(loginedHeader,'aui-hide')) {
+              $api.removeCls(loginedHeader,'aui-hide');
+              $api.addCls(unloginHeader,'aui-hide');
+          } else if($api.hasCls(unloginHeader,'aui-hide')) {
+              $api.removeCls(unloginHeader,'aui-hide');
+              $api.addCls(loginedHeader,'aui-hide');
+          }
   }
 
   function openLogin() {
@@ -72,7 +136,7 @@
               name: 'test'
           }
       });
-
   }
+
 </script>
 </html>

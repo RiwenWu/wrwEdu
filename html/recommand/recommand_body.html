@@ -9,6 +9,7 @@
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
   <link rel="stylesheet" type="text/css" href="../../css/slidepage.css" />
 
   <link rel="stylesheet" href="../../css/idangerous.swiper.css">
@@ -17,6 +18,7 @@
 	<style>
 		html {width: 100%;height: 100%;background: #E6E9EE;}
 		body {background: #E6E9EE;width: 100%;/*height: 100%;*/}
+    .aui-card-list-content img {width: 320px; height: 180px;}
 
 		.recommand_card {box-sizing:border-box;-webkit-box-sizing:border-box;float: left;width: 50%;padding-left: 5px;padding-right: 5px;text-align: center;font-size: 12px;margin-bottom: 10px;}
 		.recommand_card img {width: 100%;}
@@ -24,11 +26,6 @@
 		.divider {height: 10px;clear: both;}
 		.innerCard {background: #fff;}
 		.videotitle {padding-bottom: 4px;padding-left: 5px;}
-
-		.tvshow_row {height: 137px;}
-		.tvshow_row .innerCard{text-align: left;position: relative;}
-		.videosubtitle {font-size: 10px; color: #909090;padding-left: 5px;padding-bottom: 5px;}
-		.update {position: absolute; bottom: 45px; margin-left: 5px; color: #fff;}
 
 		.card_hover {background: #0f0;}
 
@@ -92,45 +89,13 @@
 	</ul>
 
 	<div class="divider"></div>
-	<!-- 电视剧 -->
-	<div class="subtitle">电视剧</div>
-	<ul class="tvshow_row">
-		<li class="recommand_card" tapmod="card_hover" onclick="openNewWindow()">
-			<div class="innerCard">
-				<img src="../../image/tvcover_bjwzs.jpg" alt="">
-				<div class="update">更新至31集</div>
-				<div class="videotitle">北平无战事</div>
-				<div class="videosubtitle">七影帝身份成迷</div>
-			</div>
-		</li>
-		<li class="recommand_card" tapmod="card_hover" onclick="openNewWindow()">
-			<div class="innerCard">
-				<img src="../../image/tvcover_fzqy.jpg" alt="">
-				<div class="update">更新至12集</div>
-				<div class="videotitle">风中奇缘</div>
-				<div class="videosubtitle">宫廷女子不可小觑</div>
-			</div>
-		</li>
-	</ul>
+	<!-- 全部课程 -->
+	<div class="subtitle">全部课程</div>
+  <section class="aui-content aui-padded-l-5 aui-padded-r-10 aui-padded-t-5">
+      <div class="aui-row aui-row-padded">
 
-	<ul class="tvshow_row">
-		<li class="recommand_card" tapmod="card_hover" onclick="openNewWindow()">
-			<div class="innerCard">
-				<img src="../../image/tvcover_badhj.jpg" alt="">
-				<div class="update">更新至12集</div>
-				<div class="videotitle">半路父子</div>
-				<div class="videosubtitle">张国立换儿子啦？</div>
-			</div>
-		</li>
-		<li class="recommand_card" tapmod="card_hover" onclick="openNewWindow()">
-			<div class="innerCard">
-				<img src="../../image/tvcover_xdxd.jpg" alt="">
-				<div class="update">更新至24集</div>
-				<div class="videotitle">铁血武工队传奇</div>
-				<div class="videosubtitle">武工队传奇姊妹篇</div>
-			</div>
-		</li>
-	</ul>
+      </div>
+  </section>
 
 	<div class="subtitle"></div>
 </body>
@@ -172,7 +137,49 @@
 		mySwiper.startAutoplay();
 	}
 
+  function initData(pageNumber) {
+    api.ajax({
+        url: 'http://172.168.1.102:8081/eduonline-app/queryallcourseBypage.json?PAGENO=' + pageNumber,
+        method: 'get'
+    },function(ret, err){
+        if (ret.bool) {
+            var element = $api.dom('.aui-row');
+            var html = "";
+            if(ret.data.length != 0){
+                for (var i = 0; i < ret.data.length; i++) {
+                    html += '<div class="aui-col-xs-6">'
+                        +'<div class="aui-card-list">'
+                            +'<div class="aui-card-list-content">'
+                                +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].picurl +'">'
+                            +'</div>'
+                            +'<div class="aui-card-list-header aui-font-size-14">' + ret.data[i].name + '</div>'
+                        +'</div>'
+                    +'</div>';
+              }
+              if(pageNumber == 1){
+                $api.html(element, html);
+              } else {
+                $api.append(element, html);
+              }
+          } else {
+            api.toast({
+                msg: ret.msg,
+                duration: 2000,
+                location: 'middle'
+            });
+          }
+        } else {
+            alert( JSON.stringify( ret.msg ) );
+        }
+    });
+  }
+
 	apiready = function (){
+    var pageNo = 1;
+
+    //初始化数据
+    initData(1);
+
 		api.setRefreshHeaderInfo({
 			visible: true,
 			bgColor: 'rgba(0,0,0,0)',
@@ -181,7 +188,20 @@
 			textUp: '释放刷新'
 		}, function(ret, err){
 		    api.refreshHeaderLoadDone();
+        initData(1);
 		});
+
+    //监听是否滑倒底部
+    api.addEventListener({
+        name:'scrolltobottom',
+        extra:{
+            threshold:20            //设置距离底部多少距离时触发，默认值为0，数字类型
+        }
+    }, function(ret, err){
+        pageNo = pageNo + 1;
+        window.console.log(pageNo);
+        initData(pageNo);
+    });
 	};
 
 </script>
