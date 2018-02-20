@@ -33,13 +33,6 @@
       <div class="aui-card-list-content" id="aui-slide">
         <div class="aui-slide-wrap" >
             <div class="aui-slide-node bg-dark">
-                <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t4276/257/2416766721/125228/ba72a107/58d1d078N20e18b62.jpg" />
-            </div>
-            <div class="aui-slide-node bg-dark">
-                <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t4276/257/2416766721/125228/ba72a107/58d1d078N20e18b62.jpg" />
-            </div>
-            <div class="aui-slide-node bg-dark">
-                <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t4276/257/2416766721/125228/ba72a107/58d1d078N20e18b62.jpg" />
             </div>
         </div>
         <div class="aui-slide-page-wrap"><!--分页容器--></div>
@@ -53,31 +46,7 @@
       </div>
     </section>
     <section class="aui-content bg-white aui-padded-15 aui-font-size-14" id="goods-detail">
-      <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t4276/257/2416766721/125228/ba72a107/58d1d078N20e18b62.jpg">
-      已激活的iPhone无质量问题不支持七天无理由退换货，请您确认需求后再激活使用。<br/>
-      5.5 英寸（对角线）显示屏，1920 x 1080 分辨率<br/>
-      3D Touch<br/>
-      1200 万像素摄像头<br/>
-      4-LED True Tone 闪光灯<br/>
-      配备嵌入式 M10 运动协处理器的 A10 Fusion 芯片<br/>
-      4K 视频拍摄 (30 fps) 以及慢动作视频拍摄 (120 fps, 1080p)<br/>
-      配备 Retina 闪光灯的 700 万像素 FaceTime HD 摄像头<br/>
-      内置于主屏幕按钮的 Touch ID 指纹识别传感器<br/>
-      具备 MIMO 技术的 802.11a/b/g/n/ac 无线网络<br/>
-      免责声明<br/>
-      法律免责声明<br/>
-      1 iPhone 7 和 iPhone 7 Plus 可防溅、抗水、防尘，在受控实验室条件下经测试，其效果在 IEC 60529 标准下达到 IP67 级别。防溅、抗水、防尘功能并非永久有效，防护性能可能会因日常磨损而下降。请勿为潮湿状态下的 iPhone 充电；请参阅使用手册了解清洁和干燥说明。由于浸入液体而导致的损坏不在保修范围之内。<br/>
-      2 亮黑色 iPhone 7 和 iPhone 7 Plus 高光泽度的外观，采用包含九道精密工序的阳极氧化与抛光工艺打造而成。其表面硬度与其他采用阳极氧化处理的 Apple 产品相同；但是，高光泽度表面可能随着日常使用而出现细微磨损。如果对此有所担心，建议你选择一款合适的保护壳来保护你的 iPhone。
-      3 Apple Pay 仅在部分市场提供。请到苹果官网查看 Apple Pay 适用的国家和地区列表。<br/>
-      4 所有电池性能信息取决于网络设置和许多其它因素，实际结果可能有所不同。电池充电周期次数有限，最终可能需由 Apple 服务提供商更换。 电池使用时间和充电周期次数依设置和使用情况的不同而可能有所差异。详情请参阅 www.apple.com/cn/batteries 和 www.apple.com/cn/iphone/battery.html。<br/>
-      5 需要使用数据计划。4G LTE Advanced 和 4G LTE 功能适用于特定国家或地区的特定运营商。速度依据理论上的数据吞吐量，并基于现场状况和不同运营商而可能有所差异。有关 4G LTE 支持的详情，请联系你的运营商并查看 www.apple.com/iphone/LTE。<br/>
-      6 亮黑色的 iPhone 7 和 iPhone 7 Plus 仅提供 128GB 和 256GB 机型。<br/>
-      7 实际可供使用的空间小于总容量，并会因许多因素而可能有所差异。<br/>
-      8 某些功能仅适用于部分国家或地区。烦请到苹果官网查看详情<br/>
-      9 所有产品信息，以苹果官网为准（apple.com.cn)<br/><br/>
-
-      技术规格<br/>
-      请前往 www.apple.com/cn/iphone-7/specs/ 查看完整内容。<br/>
+      <!-- 介绍 -->
     </section>
     <section class="aui-content aui-hide" id="comment-list">
       <ul class="aui-list aui-media-list aui-list-noborder">
@@ -228,6 +197,7 @@
     </section>
 
 </body>
+<script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/aui-slide.js"></script>
 <script type="text/javascript" src="../script/aui-tab.js"></script>
 <script type="text/javascript">
@@ -276,7 +246,60 @@
               name: 'test'
           }
       });
-
     }
+
+    function initIntroduce(Cid) {
+      api.ajax({
+          url: 'http://172.168.1.102:8081/eduonline-app/queryCourseById.json',
+          method: 'post',
+          data: {
+            values: {
+                id:Cid
+            }
+          }
+      },function(ret, err){
+          if (ret.bool) {
+            //  加载封面
+            var cover =  $api.dom('.aui-slide-node');
+            var html1 = '<img src="http://172.168.1.102:8081/eduonline/'+ ret.data.picurl +'"/>';
+            $api.html(cover, html1);
+
+            // 加载介绍
+            var introduce = $api.dom('#goods-detail');
+            var isFree;
+            if (ret.data.free_state == '0'){
+              isFree = '<div class="aui-label aui-label-info">免费</div>';
+            } else {
+              isFree = '<div class="aui-label aui-label-info">付费</div>';
+            }
+            var html2 = '<section class="aui-content-padded">'
+                          +'<div class="aui-card-list">'
+                              +'<div class="aui-card-list-header">'
+                                  + ret.data.name
+                                  + isFree
+                              +'</div>'
+                              +'<div class="aui-card-list-content">'
+                                  +'<div class="aui-list-item-title">课程介绍</div>'
+                                  +'<div class="aui-list-item-text aui-ellipsis-2">'
+                                      + ret.data.introduce
+                                  +'</div>'
+                              +'</div>'
+                          +'</div>'
+                        +'</section>';
+            $api.html(introduce, html2);
+          } else {
+              alert( JSON.stringify( ret.msg ) );
+          }
+      });
+    }
+
+    apiready = function(){
+        api.parseTapmode();
+        //获取传递过来的courseId
+        var courseId = api.pageParam.id;
+
+        //初始化介绍
+        initIntroduce(courseId);
+    };
 </script>
 </html>

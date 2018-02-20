@@ -105,12 +105,14 @@
 	function emptyopt () {
 	}
 
-	function openNewWindow()
+	function openNewWindow(id)
 	{
 		api.openWin({
 		    name: 'lesson_detail',
 		    url: '../lesson_detail_win.html',
-		    pageParam: {},
+		    pageParam: {
+          id: id
+        },
 		    bounces: true,
 		    opaque: false,
 		    // bgColor:  'rgba(255,255,255,0)',
@@ -147,7 +149,7 @@
             var html = "";
             if(ret.data.length != 0){
                 for (var i = 0; i < ret.data.length; i++) {
-                    html += '<div class="aui-col-xs-6">'
+                    html += '<div class="aui-col-xs-6" onclick="openNewWindow('+ ret.data[i].id +')">'
                         +'<div class="aui-card-list">'
                             +'<div class="aui-card-list-content">'
                                 +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].picurl +'">'
@@ -199,7 +201,6 @@
         }
     }, function(ret, err){
         pageNo = pageNo + 1;
-        window.console.log(pageNo);
         initData(pageNo);
     });
 	};
