@@ -33,14 +33,16 @@
 	<script src="../script/jwplayer.html5.js"></script>
 	<script type="text/javascript">
 		apiready = function() {
-			var moviePlayer = api.require('moviePlayer');
+
 			var videoId = api.pageParam.id;
+				window.console.log(videoId);
 			var videoUrl = 'http://172.168.1.102:8081/eduonline/' + queryVideoUrl(videoId);
 			initVideo(videoUrl);
 		}
 
 		//初始化视屏
 		function initVideo(videoUrl) {
+			var moviePlayer = api.require('moviePlayer');
 			moviePlayer.open({
 								rect:{
 									x: 0,

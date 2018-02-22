@@ -140,6 +140,7 @@
     });
 
     function openVideo(id) {
+			window.console.log(id);
       api.openWin({
           name: 'vide_detail',
           url: './openplayer0.html',
@@ -209,7 +210,7 @@
           if (ret.bool) {
               var html = "";
               for (var i = 0; i < ret.data.length; i++) {
-                  html += '<li class="aui-list-item" onclick="openVideo('+ ret.data.id +')">'
+                  html += '<li class="aui-list-item" onclick="openVideo('+ ret.data[i].id +')">'
                       +'<div class="aui-list-item-inner">'
                           +'<div class="aui-list-item-title">'+ ret.data[i].title +'</div>'
                       +'</div>'
