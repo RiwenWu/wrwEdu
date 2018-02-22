@@ -60,13 +60,13 @@
 	<!-- 热点 -->
 	<div class="subtitle">精选好课</div>
 	<ul class="recommand_row">
-		<li class="recommand_card" tapmod="card_hover" onclick="openNewWindow()">
+		<li class="recommand_card" tapmod="card_hover" onclick="openCourseWin()">
 			<div class="innerCard">
 				<img src="../../image/videocover01.jpg" alt="">
 				<div class="videotitle">林依晨订婚宴现场曝光</div>
 			</div>
 		</li>
-		<li class="recommand_card"  tapmod="card_hover" onclick="openNewWindow()">
+		<li class="recommand_card"  tapmod="card_hover" onclick="openCourseWin()">
 			<div class="innerCard">
 				<img src="../../image/videocover02.jpg" alt="">
 				<div class="videotitle">网传张歆艺杨树鹏离婚</div>
@@ -74,13 +74,13 @@
 		</li>
 	</ul>
 	<ul class="recommand_row">
-		<li class="recommand_card"  tapmod="card_hover" onclick="openNewWindow()">
+		<li class="recommand_card"  tapmod="card_hover" onclick="openCourseWin()">
 			<div class="innerCard">
 				<img src="../../image/tvcover_04.jpg" alt="">
 				<div class="videotitle">曝王菲全力备孕黏紧霆锋</div>
 			</div>
 		</li>
-		<li class="recommand_card" tapmod="card_hover" onclick="openNewWindow()">
+		<li class="recommand_card" tapmod="card_hover" onclick="openCourseWin()">
 			<div class="innerCard">
 				<img src="../../image/tvcover_01.jpg" alt="">
 				<div class="videotitle">向太暗示蓝洁瑛变疯真相</div>
@@ -105,7 +105,7 @@
 	function emptyopt () {
 	}
 
-	function openNewWindow(id)
+	function openCourseWin(id)
 	{
 		api.openWin({
 		    name: 'lesson_detail',
@@ -149,7 +149,7 @@
             var html = "";
             if(ret.data.length != 0){
                 for (var i = 0; i < ret.data.length; i++) {
-                    html += '<div class="aui-col-xs-6" onclick="openNewWindow('+ ret.data[i].id +')">'
+                    html += '<div class="aui-col-xs-6" onclick="openCourseWin('+ ret.data[i].id +')">'
                         +'<div class="aui-card-list">'
                             +'<div class="aui-card-list-content">'
                                 +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].picurl +'">'

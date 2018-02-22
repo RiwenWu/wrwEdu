@@ -29,7 +29,7 @@
       }
       .imgbody {
         margin:250px auto;
-        height: 151px;
+        height: auto;
         width: 206px;
       }
 	</style>
@@ -64,17 +64,56 @@
   </section>
   <section>
     <div class="aui-tab" id="tab">
-        <div class="aui-tab-item aui-active">我的计划</div>
-        <div class="aui-tab-item">我的收藏</div>
-        <div class="aui-tab-item">我的下载</div>
+        <div class="aui-tab-item" onclick="" >我的计划</div>
+        <div class="aui-tab-item" onclick="openMyCollection()">我的收藏</div>
+        <div class="aui-tab-item" onclick="">我的下载</div>
     </div>
     <div class="imgbody">
         <img src="../../image/myLearn/ico_user_login.png" />
         <p>登录后多设备可同步学习进度</p>
     </div>
-    <div class="aui-content-padded">
-
-    </div>
+      <div class="aui-content aui-hide" id="learingCourseList">
+          <ul class="aui-list aui-media-list">
+          <!--
+        <div class="imgbody">
+            <p onclick="openSearch()">去搜索感兴趣的课程 GO——></p>
+        </div>
+            <li class="aui-list-header">正在学习</li>
+            <li class="aui-list-item" onclick="openCourseWin()">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-18">课程名称</div>
+                        </div>
+                        <div class="aui-info aui-padded-b-0">
+                            <div class="aui-info-item aui-font-size-12">加入时间</div>
+                            <div class="aui-info-item aui-font-size-14" onclick="coursePlan()">设置学习计划</div>
+                        </div>
+                    </div>
+                    <div class="aui-list-item-media">
+                        <img src="../../image/demo1.png">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item" onclick="openCourseWin()">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-18">课程名称</div>
+                        </div>
+                        <div class="aui-info aui-padded-b-0">
+                            <div class="aui-info-item aui-font-size-12">加入时间</div>
+                            <div class="aui-info-item aui-font-size-14" onclick="coursePlan()">距离计划完成时间还有</div>
+                        </div>
+                    </div>
+                    <div class="aui-list-item-media">
+                        <img src="../../image/demo1.png">
+                    </div>
+                </div>
+            </li>
+          -->
+          </ul>
+      </div>
   </section>
 
 </body>
@@ -90,6 +129,9 @@
       //注册监听事件
       listenLoginEven();
       listenLogoutEven();
+
+      //初始化数据
+      initData();
   }
 
   //监听是否登陆
@@ -138,5 +180,141 @@
       });
   }
 
+  function openSearch() {
+      api.openWin({
+          name: 'search',
+          url: '../search.html',
+          pageParam: {
+              name: 'test'
+          }
+      });
+  }
+
+  //打开我的收藏页面
+  function openMyCollection(){
+    if(isLogin()){
+      api.openWin({
+          name: 'login',
+          url: './myCollection_win.html',
+          pageParam: {
+              name: 'test'
+          }
+      });
+    } else {
+      openLogin();
+    }
+  }
+
+  //
+  function coursePlan() {
+    event.preventDefault();
+    event.stopPropagation();
+    window.console.log("plan");
+    var currentdate = getNowFormatDate();
+    api.openPicker({
+        type: 'date',
+        date: currentdate,
+        title: '选择时间'
+    }, function(ret, err) {
+        if (ret) {
+            alert(JSON.stringify(ret));
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+  }
+
+  //获取当前时间，格式YYYY-MM-DD
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
+
+    //初始化数据
+    function initData() {
+      if (isLogin()) {
+          $api.addCls($api.dom(".imgbody"), 'aui-hide');
+          $api.removeCls($api.dom("#learingCourseList"), 'aui-hide');
+          initJoinCourse();
+      }
+    }
+
+    function initJoinCourse() {
+      //在localstorage中获取userId
+      var userId = $api.getStorage("userId");
+      api.ajax({
+          url: 'http://172.168.1.102:8081/eduonline-app/queryJoinCourseListById.json',
+          method: 'post',
+          data: {
+              values: {
+                  userId: userId
+              }
+          }
+      },function(ret, err){
+          if (ret.bool) {
+              var html = "";
+              if (ret.data.length == 0) {
+                  html = '<div class="imgbody"><p onclick="openSearch()">去搜索感兴趣的课程 GO——></p></div>';
+              } else {
+                html = '<li class="aui-list-header">正在学习</li>';
+                for (var i = 0; i < ret.data.length; i++) {
+                    window.console.log(ret.data[i].planfinish_time);
+                    html += '<li class="aui-list-item" onclick="openCourseWin(' + ret.data[i].id + ')">'
+                        +'<div class="aui-media-list-item-inner">'
+                            +'<div class="aui-list-item-inner">'
+                                +'<div class="aui-list-item-text">'
+                                    +'<div class="aui-list-item-title aui-font-size-18">' + ret.data[i].name + '</div>'
+                                +'</div>'
+                                +'<div class="aui-info aui-padded-b-0">'
+                                    +'<div class="aui-info-item aui-font-size-12">' + ret.data[i].create_time + '</div>'
+                                    +'<div class="aui-info-item aui-font-size-14" onclick="coursePlan()">设置学习计划</div>'
+                                +'</div>'
+                            +'</div>'
+                            +'<div class="aui-list-item-media">'
+                                +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].picurl +'">'
+                            +'</div>'
+                        +'</div>'
+                    +'</li>';
+                }
+              }
+              $api.html($api.dom('#learingCourseList ul') , html);
+
+          } else {
+              alert( JSON.stringify( err ) );
+          }
+      });
+
+    }
+
+    function openCourseWin(id) {
+      api.openWin({
+  		    name: 'lesson_detail',
+  		    url: '../lesson_detail_win.html',
+  		    pageParam: {
+            id: id
+          },
+  		    bounces: true,
+  		    opaque: false,
+  		    // bgColor:  'rgba(255,255,255,0)',
+  		    vScrollBarEnabled:false,
+  		    hScrollBarEnabled:true,
+  		    // animation: {
+  		    //         type: 'flip',
+  		    //         subType: 'from_bottom',
+  		    //         duration: 500
+  		    //     }
+  	    })
+    }
 </script>
 </html>

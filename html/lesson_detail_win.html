@@ -18,7 +18,7 @@
             <div class="aui-bar-tab-label aui-text-warning">收藏</div>
         </div>
         <div class="aui-bar-tab-item aui-bg-warning aui-text-white" tapmode id="shopCart" style="width: auto;">加入购物车</div>
-        <div class="aui-bar-tab-item aui-bg-danger aui-text-white" tapmode id="learning" style="width: auto;">+加入学习</div>
+        <div class="aui-bar-tab-item aui-bg-danger aui-text-white unjoin" tapmode id="join" style="width: auto;" onclick="changeJoin()">+加入学习</div>
     </footer>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -61,7 +61,7 @@
         //在localstorage中获取userId
         var userId = $api.getStorage("userId");
         var collectionState;
-        if (isCollection()) {
+        if (isState("collection", "uncollection")) {
           collectionState = "0";
         } else {
           collectionState = "1";
@@ -110,6 +110,59 @@
       }
     }
 
+    //改变加入状态
+    function changeJoin() {
+      if (isLogin()){
+        //在localstorage中获取userId
+        var userId = $api.getStorage("userId");
+        var collectionState;
+        if (isState("join", "unjoin")) {
+          joinState = "0";
+        } else {
+          joinState = "1";
+        }
+        api.ajax({
+            url: 'http://172.168.1.102:8081/eduonline-app/changeJoin.json',
+            method: 'post',
+            data: {
+              values: {
+                  userId: userId,
+                  courseId: courseId,
+                  joinState: joinState
+              }
+            }
+        },function(ret, err){
+            if (ret.bool) {
+                if (ret.code == 0){
+                  var join = $api.dom("#join");
+                  $api.addCls(collection,'unjoin');
+                  $api.html(join, '+加入学习');
+
+                  api.toast({
+                      msg: "取消加入",
+                      duration: 2000,
+                      location: 'buttom'
+                  });
+                } else if (ret.code == 1) {
+                  var join = $api.dom("#join");
+                  $api.removeCls(join,'unjoin');
+                  $api.html(join, '已加入学习');
+
+                  api.toast({
+                      msg: "加入学习成功",
+                      duration: 2000,
+                      location: 'buttom'
+                  });
+                }
+            } else {
+                alert( JSON.stringify( ret.msg ) );
+            }
+        });
+      } else {
+        openLogin();
+      }
+    }
+
     //打开登陆页面
     function openLogin() {
         api.openWin({
@@ -121,11 +174,11 @@
         });
     }
 
-    //判断是否已收藏
-    function isCollection() {
-        var collection = $api.dom("#collection");
+    //判断是否有状态 如 uncollection unjoin
+    function isState(id, clszz) {
+        var obj = $api.dom("#" + id);
         //判断是否已收藏
-        if($api.hasCls(collection,'uncollection')){
+        if($api.hasCls(obj, clszz)){
             return false;
         } else {
             return true;
@@ -146,31 +199,61 @@
         });
     }
 
+    //初始化收藏
+    function initJoin() {
+      var userId = $api.getStorage("userId");
+      api.ajax({
+          url: 'http://172.168.1.102:8081/eduonline-app/queryUserJoinByIds.json',
+          method: 'post',
+          data: {
+            values: {
+                userId: userId,
+                courseId: courseId
+            }
+          }
+      },function(ret, err){
+          if (ret.bool) {
+              if(ret.data != undefined && ret.data.joinState == 1) {
+                var join = $api.dom("#join");
+                $api.removeCls(join,'unjoin');
+                $api.html(join, '已加入学习');
+              }
+          } else {
+              alert( JSON.stringify( ret ) );
+          }
+      });
+    }
+
+    function initCollection() {
+      var userId = $api.getStorage("userId");
+      api.ajax({
+          url: 'http://172.168.1.102:8081/eduonline-app/queryUserCollectionByIds.json',
+          method: 'post',
+          data: {
+            values: {
+                userId: userId,
+                courseId: courseId
+            }
+          }
+      },function(ret, err){
+          if (ret.bool) {
+              if(ret.data != undefined && ret.data.collection == 1) {
+                var collection = $api.dom("#collection");
+                $api.removeCls(collection,'uncollection');
+                var title_collection = $api.dom(".aui-bar-tab-label");
+                $api.html(title_collection, '已收藏');
+              }
+          } else {
+              alert( JSON.stringify( ret ) );
+          }
+      });
+    }
+
     //初始化数据
     function initData() {
       if(isLogin()) {
-        var userId = $api.getStorage("userId");
-        api.ajax({
-            url: 'http://172.168.1.102:8081/eduonline-app/queryUserCollectionByIds.json',
-            method: 'post',
-            data: {
-              values: {
-                  userId: userId,
-                  courseId: courseId
-              }
-            }
-        },function(ret, err){
-            if (ret.bool) {
-                if(ret.data.collection == 1) {
-                  var collection = $api.dom("#collection");
-                  $api.removeCls(collection,'uncollection');
-                  var title_collection = $api.dom(".aui-bar-tab-label");
-                  $api.html(title_collection, '已收藏');
-                }
-            } else {
-                alert( JSON.stringify( ret ) );
-            }
-        });
+        initCollection();
+        initJoin();
     }
   }
 </script>
