@@ -92,106 +92,7 @@
     <section class="aui-content aui-hide" id="class-list">
       <div class="aui-content aui-margin-b-15">
         <ul class="aui-list aui-list-in">
-            <li class="aui-list-item" onclick="openVide()">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-title">text</div>
-                    <div class="aui-list-item-right">信息</div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-title">label</div>
-                    <div class="aui-list-item-right">
-                        <div class="aui-label aui-label-info">标签</div>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">dot</div>
-                    <div class="aui-list-item-right">
-                        <div class="aui-dot" style="position:relative;top:0; right:0"></div>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">badge</div>
-                    <div class="aui-list-item-right">
-                        <div class="aui-badge" style="position:relative;top:0; left:0">88</div>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">badge</div>
-                    <div class="aui-list-item-right">
-                        <div class="aui-badge" style="position:relative;top:0; left:0"></div>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">progress</div>
-                    <div class="aui-list-item-right">
-                        <div class="aui-progress aui-progress aui-progress-xxs" style="width:5rem;">
-                            <div class="aui-progress-bar" style="width: 60%;"></div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">range</div>
-                    <div class="aui-list-item-right">
-                        <div class="aui-range">
-                            <input type="range" class="aui-range" value="30" max="100" min="1" step="1" id="range" />
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-title">switch</div>
-                    <div class="aui-list-item-right">
-                        <input type="checkbox" class="aui-switch" checked>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-title">radio</div>
-                    <div class="aui-list-item-right">
-                        <input type="radio" class="aui-radio" checked>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-title">checkbox</div>
-                    <div class="aui-list-item-right">
-                        <input type="checkbox" class="aui-checkbox" checked>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-title">bar-btn</div>
-                    <div class="aui-list-item-right">
-                        <div class="aui-bar aui-bar-btn aui-bar-btn-sm" style="width:60%;float:right">
-                            <div class="aui-bar-btn-item">
-                                <i class="aui-iconfont aui-icon-minus"></i>
-                            </div>
-                            <div class="aui-bar-btn-item">
-                                <input type="number" class="aui-input aui-text-center" value="1" >
-                            </div>
-                            <div class="aui-bar-btn-item">
-                                <i class="aui-iconfont aui-icon-plus"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
+
         </ul>
     </div>
     </section>
@@ -238,16 +139,17 @@
         }
     });
 
-    function openVide() {
+    function openVideo(id) {
       api.openWin({
           name: 'vide_detail',
           url: './openplayer0.html',
           pageParam: {
-              name: 'test'
-          }
+            id: id
+          },
       });
     }
 
+    //初始化介绍
     function initIntroduce(Cid) {
       api.ajax({
           url: 'http://172.168.1.102:8081/eduonline-app/queryCourseById.json',
@@ -293,6 +195,34 @@
       });
     }
 
+    //初始化目录
+    function initMenu(Cid) {
+      api.ajax({
+          url: 'http://172.168.1.102:8081/eduonline-app/queryVideoListByCourseId.json',
+          method: 'post',
+          data: {
+              values: {
+                  courseId: Cid
+              }
+          }
+      },function(ret, err){
+          if (ret.bool) {
+              var html = "";
+              for (var i = 0; i < ret.data.length; i++) {
+                  html += '<li class="aui-list-item" onclick="openVideo('+ ret.data.id +')">'
+                      +'<div class="aui-list-item-inner">'
+                          +'<div class="aui-list-item-title">'+ ret.data[i].title +'</div>'
+                      +'</div>'
+                  +'</li>';
+              }
+              $api.html($api.dom('#class-list ul'), html);
+          } else {
+              alert( JSON.stringify( err ) );
+          }
+      });
+
+    }
+
     apiready = function(){
         api.parseTapmode();
         //获取传递过来的courseId
@@ -300,6 +230,7 @@
 
         //初始化介绍
         initIntroduce(courseId);
+        initMenu(courseId);
     };
 </script>
 </html>

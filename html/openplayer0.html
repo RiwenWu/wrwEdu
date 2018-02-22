@@ -34,80 +34,108 @@
 	<script type="text/javascript">
 		apiready = function() {
 			var moviePlayer = api.require('moviePlayer');
+			var videoId = api.pageParam.id;
+			var videoUrl = 'http://172.168.1.102:8081/eduonline/' + queryVideoUrl(videoId);
+			initVideo(videoUrl);
+		}
+
+		//初始化视屏
+		function initVideo(videoUrl) {
 			moviePlayer.open({
-			          rect:{
-				          x: 0,
-				          y: 0,
-				          w:api.frameWidth,
-				          h:300
-			          },
-			          styles:{
-				          head:{
-					          bg: 'rgba(161,161,161,0.5)',
-					          height: 44,
-					          y:20,
-					          title:{
-					          size:20,
-					          color:'#fff',
-					          width:40,
-					          leftMargin:10
-				          },
-				          backSize: 30,
-				          backImg:'widget://image/back.png',
-				          customButtons:[{
-				          w:30,
-				          h:30,
-				          rightMagin:10,
-				          img:'widget://image/image/collect.png',
-				          imgSelected:'fs://image/collectSelected.png',
-				          }]},
-				          foot:{
-					          bg: 'rgba(0,0,0,0.5)',
-					          height: 44,
-					          palyBtn:{
-					          size: 20,
-					          playImg:'widget://image/play.png',
-					          pauseImg:'widget://image/pause.png',
-					          marginLeft:5
-				          },
-				          currentTimeLabel:{
-					          textSize:14,
-					          textColor:"#FFF",
-					          textWidth: 43,
-					          marginLeft:5
-				          },
-				          seekBar:{
-					          sliderImg:'widget://image/circle.png',
-					          sliderW : 20,
-					          sliderH : 20,
-					          progressColor: '#696969',
-					          progressSelected: '#76EE00',
-					          marginLeft:10,
-					          marginRight:10
-				          },
-				          totalTimeLabel:{
-				          textSize:14,
-				          textColor:"#FFF",
-				          textWidth: 43,
-				          marginRight:5
-				          },
-				          fullscreenBtn:{
-				          size:20,
-				          verticalImg:'widget://image/vertical.png',
-				          horizontalImg:'widget://image/horizontal.png',
-				          }
-				          }
+								rect:{
+									x: 0,
+									y: 0,
+									w:api.frameWidth,
+									h:300
+								},
+								styles:{
+									head:{
+										bg: 'rgba(161,161,161,0.5)',
+										height: 44,
+										y:20,
+										title:{
+										size:20,
+										color:'#fff',
+										width:40,
+										leftMargin:10
+									},
+									backSize: 30,
+									backImg:'widget://image/back.png',
+									customButtons:[{
+									w:30,
+									h:30,
+									rightMagin:10,
+									img:'widget://image/image/collect.png',
+									imgSelected:'fs://image/collectSelected.png',
+									}]},
+									foot:{
+										bg: 'rgba(0,0,0,0.5)',
+										height: 44,
+										palyBtn:{
+										size: 20,
+										playImg:'widget://image/play.png',
+										pauseImg:'widget://image/pause.png',
+										marginLeft:5
+									},
+									currentTimeLabel:{
+										textSize:14,
+										textColor:"#FFF",
+										textWidth: 43,
+										marginLeft:5
+									},
+									seekBar:{
+										sliderImg:'widget://image/circle.png',
+										sliderW : 20,
+										sliderH : 20,
+										progressColor: '#696969',
+										progressSelected: '#76EE00',
+										marginLeft:10,
+										marginRight:10
+									},
+									totalTimeLabel:{
+									textSize:14,
+									textColor:"#FFF",
+									textWidth: 43,
+									marginRight:5
+									},
+									fullscreenBtn:{
+									size:20,
+									verticalImg:'widget://image/vertical.png',
+									horizontalImg:'widget://image/horizontal.png',
+									}
+									}
 							},
-			           path:'http://resource.apicloud.com/video/apicloud3.mp4',
-			           autoPlay: true
-			            },function(ret, err){
-			                if(ret){
-			                    // alert(JSON.stringify(ret));
-			                // } else {
-			                    // alert(JSON.stringify(err));
-			                }
+								 path:videoUrl,
+								 autoPlay: true
+									},function(ret, err){
+											if(ret){
+													// alert(JSON.stringify(ret));
+											// } else {
+													// alert(JSON.stringify(err));
+											}
 
 			});
+		}
+
+		//获取视频地址
+		function queryVideoUrl(videoId) {
+			api.ajax({
+			    url: 'http://172.168.1.102:8081/eduonline-app/queryVideoById.json',
+			    method: 'post',
+			    data: {
+			        values: {
+			            videoId: videoId
+			        }
+			    }
+			},function(ret, err){
+			    if (ret.bool) {
+			        window.console.log(ret.data.path);
+							return ret.data.path;
+			    } else {
+			        alert( JSON.stringify( err ) );
+			    }
+			});
+
 		}
 	</script>
 </html>
