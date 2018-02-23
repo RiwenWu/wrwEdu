@@ -35,9 +35,8 @@
 		apiready = function() {
 
 			var videoId = api.pageParam.id;
-				window.console.log(videoId);
-			var videoUrl = 'http://172.168.1.102:8081/eduonline/' + queryVideoUrl(videoId);
-			initVideo(videoUrl);
+			queryVideoUrl(videoId);
+			//initVideo(url);
 		}
 
 		//初始化视屏
@@ -131,8 +130,8 @@
 			    }
 			},function(ret, err){
 			    if (ret.bool) {
-			        window.console.log(ret.data.path);
-							return ret.data.path;
+							var url = 'http://172.168.1.102:8081/eduonline/' + ret.data.path;
+							initVideo(url);
 			    } else {
 			        alert( JSON.stringify( err ) );
 			    }
