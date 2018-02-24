@@ -173,7 +173,7 @@
             if (ret.data.free_state == '0'){
               isFree = '<div class="aui-label aui-label-info">免费</div>';
             } else {
-              isFree = '<div class="aui-label aui-label-info">付费</div>';
+              isFree = '<div class="aui-label aui-label-danger aui-label-outlined">付费 ￥'+ ret.data.salary +'</div>';
             }
             var html2 = '<section class="aui-content-padded">'
                           +'<div class="aui-card-list">'

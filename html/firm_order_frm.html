@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui-slide.css" />
+    <style type="text/css">
+    </style>
+</head>
+<body>
+  <section class="aui-content">
+      <div class="aui-card-list">
+          <div class="aui-card-list-header aui-font-size-12 text-light">
+              购买账号&nbsp;&nbsp;152****0989
+          </div>
+          <div class="aui-card-list-content-padded aui-padded-t-0 text-light aui-font-size-12">
+              手机号
+          </div>
+          <div class="aui-card-list-footer aui-border-t">
+              <div>
+                购买后不支持退款/转让，请确认开课时间或有效期后再提交订单
+              </div>
+
+          </div>
+      </div>
+      <ul class="aui-list aui-media-list">
+        <!--
+        <li class="aui-list-item">
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-media">
+                    <img src="../../image/demo1.png">
+                </div>
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-text">
+                        <div class="aui-list-item-title">课程名称</div>
+                    </div>
+                    <div class="aui-list-item-text aui-font-size-12">
+                        永久有效
+                    </div>
+                </div>
+            </div>
+            <div class="aui-card-list-footer aui-border-t aui-bg-default">
+                <div>
+                    <i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>小计￥123.54
+                </div>
+            </div>
+        </li>
+        -->
+      </ul>
+
+  </section>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-slide.js"></script>
+<script type="text/javascript" src="../script/aui-tab.js"></script>
+<script type="text/javascript">
+  apiready = function() {
+      var courses = api.pageParam.data;
+      initData(courses);
+  }
+
+  function initData(data) {
+      var ul = $api.dom('.aui-list');
+      var html ='';
+      for (var i = 0; i < data.length; i++) {
+          html += '<li class="aui-list-item">'
+              +'<div class="aui-media-list-item-inner">'
+                  +'<div class="aui-list-item-media">'
+                      +'<img src="http://172.168.1.102:8081/eduonline/'+ data[i].picurl +'">'
+                  +'</div>'
+                  +'<div class="aui-list-item-inner">'
+                      +'<div class="aui-list-item-text">'
+                          +'<div class="aui-list-item-title">'+ data[i].name +'</div>'
+                      +'</div>'
+                      +'<div class="aui-list-item-text aui-font-size-12">'
+                          +'永久有效'
+                      +'</div>'
+                  +'</div>'
+              +'</div>'
+              +'<div class="aui-card-list-footer aui-border-t aui-bg-default">'
+                  +'<div>'
+                      +'<i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>小计￥'+ data[i].salary
+                  +'</div>'
+              +'</div>'
+          +'</li>';
+      }
+      $api.html(ul, html);
+
+
+  }
+</script>
+</html>

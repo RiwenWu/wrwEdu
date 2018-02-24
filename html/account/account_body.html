@@ -57,7 +57,7 @@
                     <div class="aui-list-item-title">消息中心</div>
                 </div>
             </li>
-            <li class="aui-list-item">
+            <li class="aui-list-item" onclick="openMyshopcar()">
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-cart"></i>
                 </div>
@@ -97,6 +97,7 @@
 
 </body>
 <script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript" src="../../script/common.js"></script>
 <script type="text/javascript">
     apiready = function () {
         api.parseTapmode();
@@ -155,7 +156,30 @@
                 name: 'test'
             }
         });
+    }
 
+    function openLogin() {
+        api.openWin({
+            name: 'login',
+            url: '../login_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+    function openMyshopcar() {
+      if (isLogin()) {
+        api.openWin({
+            name: 'my_shop_car',
+            url: './my_shop_car_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+      } else {
+        openLogin();
+      }
     }
 </script>
 </html>

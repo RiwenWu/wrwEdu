@@ -105,13 +105,14 @@
 	function emptyopt () {
 	}
 
-	function openCourseWin(id)
+	function openCourseWin(id, freeState)
 	{
 		api.openWin({
 		    name: 'lesson_detail',
 		    url: '../lesson_detail_win.html',
 		    pageParam: {
-          id: id
+          id: id,
+          freeState: freeState
         },
 		    bounces: true,
 		    opaque: false,
@@ -146,17 +147,23 @@
     },function(ret, err){
         if (ret.bool) {
             var element = $api.dom('.aui-row');
-            var html = "";
+            var html = '';
+            var freeState;
             if(ret.data.length != 0){
                 for (var i = 0; i < ret.data.length; i++) {
-                    html += '<div class="aui-col-xs-6" onclick="openCourseWin('+ ret.data[i].id +')">'
+                    if(ret.data[i].free_state == 1){
+                        freeState = '<div class="aui-label aui-label-danger aui-label-outlined">付费</div>';
+                    }
+                    html += '<div class="aui-col-xs-6" onclick="openCourseWin('+ ret.data[i].id +', '+ ret.data[i].free_state +')">'
                         +'<div class="aui-card-list">'
                             +'<div class="aui-card-list-content">'
                                 +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].picurl +'">'
                             +'</div>'
-                            +'<div class="aui-card-list-header aui-font-size-14">' + ret.data[i].name + '</div>'
+                            +'<div class="aui-card-list-header aui-font-size-14">' + ret.data[i].name + freeState +'</div>'
                         +'</div>'
                     +'</div>';
+
+                    freeState = '';
               }
               if(pageNumber == 1){
                 $api.html(element, html);

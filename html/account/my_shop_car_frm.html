@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style type="text/css">
+    </style>
+</head>
+<body>
+  <section class="aui-content">
+      <ul class="aui-list aui-select-list">
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <label><input class="aui-checkbox" type="radio" name="checkbox"> 这是一个列表项</label>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-media-listlabel">
+              <label><input class="aui-checkbox" type="radio" name="checkbox"></label>
+            </div>
+              <!--
+                <div class="aui-list-item-media">
+                    <label><input class="aui-checkbox" type="radio" name="checkbox"></label>
+                    <img src="../../image/demo1.png">
+                </div>
+              -->
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-text">
+                        <div class="aui-list-item-title">课程名称</div>
+                    </div>
+                    <div class="aui-list-item-text">
+                        <div class="aui-font-size-12">永久有效</div>
+                    </div>
+                </div>
+            <div class="aui-info">
+                <div>
+                    <i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>小计￥123.54
+                </div>
+            </div>
+        </li>
+      </ul>
+
+  </section>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+  apiready = function() {
+      //var courses = api.pageParam.data;
+      //initData(courses);
+  }
+
+  function initData(data) {
+      var ul = $api.dom('.aui-list');
+      var html ='';
+      for (var i = 0; i < data.length; i++) {
+          html += '<li class="aui-list-item">'
+              +'<div class="aui-media-list-item-inner">'
+                  +'<div class="aui-list-item-media">'
+                      +'<img src="http://172.168.1.102:8081/eduonline/'+ data[i].picurl +'">'
+                  +'</div>'
+                  +'<div class="aui-list-item-inner">'
+                      +'<div class="aui-list-item-text">'
+                          +'<div class="aui-list-item-title">'+ data[i].name +'</div>'
+                      +'</div>'
+                      +'<div class="aui-list-item-text aui-font-size-12">'
+                          +'永久有效'
+                      +'</div>'
+                  +'</div>'
+              +'</div>'
+              +'<div class="aui-card-list-footer aui-border-t aui-bg-default">'
+                  +'<div>'
+                      +'<i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>小计￥'+ data[i].salary
+                  +'</div>'
+              +'</div>'
+          +'</li>';
+      }
+      $api.html(ul, html);
+
+
+  }
+</script>
+</html>

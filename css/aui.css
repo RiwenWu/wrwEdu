@@ -998,9 +998,11 @@ input[type="search"]::-webkit-search-cancel-button {
 .aui-list label {
     line-height: 1.3rem;
 }
+/**
 .aui-list.aui-form-list .aui-list-item:active {
 	background-color: #ffffff;
 }
+**/
 .aui-list.aui-form-list .aui-list-item-inner {
 	-webkit-box-sizing: border-box;
     		box-sizing: border-box;

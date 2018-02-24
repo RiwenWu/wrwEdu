@@ -13,12 +13,7 @@
         </a>
     </header>
     <footer class="aui-bar aui-bar-tab" id="footer">
-        <div class="aui-bar-tab-item uncollection" tapmode style="width: 6rem;" tapmode id="collection" onclick="changeCollection()">
-            <i class="aui-iconfont aui-icon-star aui-text-warning"></i>
-            <div class="aui-bar-tab-label aui-text-warning">收藏</div>
-        </div>
-        <div class="aui-bar-tab-item aui-bg-warning aui-text-white" tapmode id="shopCart" style="width: auto;">加入购物车</div>
-        <div class="aui-bar-tab-item aui-bg-danger aui-text-white unjoin" tapmode id="join" style="width: auto;" onclick="changeJoin()">+加入学习</div>
+
     </footer>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -27,9 +22,13 @@
 
     //获取传递过来的courseId
     var courseId;
+    var freeState;
 
     apiready = function(){
+        //获取跳转页面传递的参数
         courseId = api.pageParam.id;
+        freeState = api.pageParam.freeState;
+
         api.parseTapmode();
         var header = $api.byId('aui-header');
         $api.fixStatusBar(header);
@@ -111,8 +110,12 @@
     }
 
     //改变加入状态
-    function changeJoin() {
+    function changeJoin(freeState) {
       if (isLogin()){
+        if(freeState == 1) {
+            openFirmOrder(courseId);
+            return false;
+        }
         //在localstorage中获取userId
         var userId = $api.getStorage("userId");
         var collectionState;
@@ -163,6 +166,17 @@
       }
     }
 
+    //打开确认订单页面
+    function openFirmOrder(courseIds) {
+        api.openWin({
+            name: 'firm_order',
+            url: './firm_order_win.html',
+            pageParam: {
+                courseIds: courseIds
+            }
+        });
+    }
+
     //打开登陆页面
     function openLogin() {
         api.openWin({
@@ -199,7 +213,7 @@
         });
     }
 
-    //初始化收藏
+    //初始化加入课程
     function initJoin() {
       var userId = $api.getStorage("userId");
       api.ajax({
@@ -224,6 +238,7 @@
       });
     }
 
+    //初始化收藏
     function initCollection() {
       var userId = $api.getStorage("userId");
       api.ajax({
@@ -249,8 +264,23 @@
       });
     }
 
+    //初始化页脚
+    function initFooter() {
+        var html = '<div class="aui-bar-tab-item uncollection" tapmode style="width: 6rem;" tapmode id="collection" onclick="changeCollection()">'
+            +'<i class="aui-iconfont aui-icon-star aui-text-warning"></i>'
+            +'<div class="aui-bar-tab-label aui-text-warning">收藏</div>'
+        +'</div>'
+        +'<div class="aui-bar-tab-item aui-bg-danger aui-text-white unjoin" tapmode id="join" style="width: auto;" onclick="changeJoin('+ freeState +')">+加入学习</div>'
+        var shopCar = '<div class="aui-bar-tab-item aui-bg-warning aui-text-white" tapmode id="shopCart" style="width: auto;">加入购物车</div>'
+        if( freeState == 1){
+            html += shopCar;
+        }
+        $api.html($api.dom('#footer'), html);
+    }
+
     //初始化数据
     function initData() {
+      initFooter();
       if(isLogin()) {
         initCollection();
         initJoin();
