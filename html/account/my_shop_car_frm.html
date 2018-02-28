@@ -10,36 +10,57 @@
 </head>
 <body>
   <section class="aui-content">
-      <ul class="aui-list aui-select-list">
+      <ul class="aui-list aui-media-list">
+        <!--
         <li class="aui-list-item">
-            <div class="aui-list-item-inner">
-                <label><input class="aui-checkbox" type="radio" name="checkbox"> 这是一个列表项</label>
-            </div>
-        </li>
-        <li class="aui-list-item">
-            <div class="aui-media-listlabel">
-              <label><input class="aui-checkbox" type="radio" name="checkbox"></label>
-            </div>
-              <!--
+            <div class="aui-media-list-item-inner">
                 <div class="aui-list-item-media">
-                    <label><input class="aui-checkbox" type="radio" name="checkbox"></label>
                     <img src="../../image/demo1.png">
                 </div>
-              -->
                 <div class="aui-list-item-inner">
-                    <div class="aui-list-item-text">
-                        <div class="aui-list-item-title">课程名称</div>
-                    </div>
-                    <div class="aui-list-item-text">
-                        <div class="aui-font-size-12">永久有效</div>
-                    </div>
-                </div>
-            <div class="aui-info">
-                <div>
-                    <i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>小计￥123.54
+                    <div class="aui-list-item-title">课程名称</div>
+                    <div class="aui-list-item-text aui-font-size-12">永久有效</div>
+                    <div class="aui-info aui-text-danger aui-font-size-12">小计￥123.54</div>
                 </div>
             </div>
+            <div class="aui-info">
+                <div onclick="checked(this, 563.56)"><input class="aui-checkbox" type="checkbox" name="checkbox"></div>
+                <div><i class="aui-iconfont aui-icon-trash"></i></div>
+            </div>
         </li>
+        <li class="aui-list-item">
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-media">
+                    <img src="../../image/demo1.png">
+                </div>
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">课程名称</div>
+                    <div class="aui-list-item-text aui-font-size-12">永久有效</div>
+                    <div class="aui-info aui-text-danger aui-font-size-12">小计￥123.54</div>
+                </div>
+            </div>
+            <div class="aui-info">
+                <div onclick="checked(this, 152.36)"><input class="aui-checkbox" type="checkbox" name="checkbox"></div>
+                <div><i class="aui-iconfont aui-icon-trash"></i></div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-media">
+                    <img src="../../image/demo1.png">
+                </div>
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">课程名称</div>
+                    <div class="aui-list-item-text aui-font-size-12">永久有效</div>
+                    <div class="aui-info aui-text-danger aui-font-size-12">小计￥123.54</div>
+                </div>
+            </div>
+            <div class="aui-info">
+                <div onclick="checked(this, 3)"><input class="aui-checkbox" type="checkbox" name="checkbox"></div>
+                <div><i class="aui-iconfont aui-icon-trash"></i></div>
+            </div>
+        </li>
+      -->
       </ul>
 
   </section>
@@ -48,38 +69,128 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript">
   apiready = function() {
-      //var courses = api.pageParam.data;
-      //initData(courses);
+      api.parseTapmode();
+      var courses = api.pageParam.data;
+      //初始化数据
+      initData();
   }
 
-  function initData(data) {
+  function initData() {
+        //在localstorage中获取userId
+        var userId = $api.getStorage("userId");
+        api.ajax({
+            url: 'http://172.168.1.102:8081/eduonline-app/queryCourseListByuserId.json',
+            method: 'post',
+            data: {
+                values: {
+                    userId: userId
+                }
+            }
+        },function(ret, err){
+            if (ret.bool) {
+                changHtml(ret.data)
+            } else {
+                alert( JSON.stringify( err ) );
+            }
+        });
+  }
+
+
+  function changHtml(data) {
       var ul = $api.dom('.aui-list');
       var html ='';
       for (var i = 0; i < data.length; i++) {
           html += '<li class="aui-list-item">'
-              +'<div class="aui-media-list-item-inner">'
+              +'<div class="aui-media-list-item-inner" tapmode onclick="openCourseWin('+ data[i].id +', '+ data[i].free_state +')">'
                   +'<div class="aui-list-item-media">'
                       +'<img src="http://172.168.1.102:8081/eduonline/'+ data[i].picurl +'">'
                   +'</div>'
                   +'<div class="aui-list-item-inner">'
-                      +'<div class="aui-list-item-text">'
-                          +'<div class="aui-list-item-title">'+ data[i].name +'</div>'
-                      +'</div>'
-                      +'<div class="aui-list-item-text aui-font-size-12">'
-                          +'永久有效'
-                      +'</div>'
+                      +'<div class="aui-list-item-title">'+ data[i].name +'</div>'
+                      +'<div class="aui-list-item-text aui-font-size-12">永久有效</div>'
+                      +'<div class="aui-info aui-text-danger aui-font-size-12">小计￥'+ data[i].salary +'</div>'
                   +'</div>'
               +'</div>'
-              +'<div class="aui-card-list-footer aui-border-t aui-bg-default">'
-                  +'<div>'
-                      +'<i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>小计￥'+ data[i].salary
-                  +'</div>'
+              +'<div class="aui-info">'
+                  +'<div onclick="checked(this, '+ data[i].salary +','+ data[i].id +')"><input class="aui-checkbox" type="checkbox" name="checkbox"></div>'
+                  +'<div><i class="aui-iconfont aui-icon-trash" tapmode onclick="delCourse('+ data[i].shopcar_id +')"></i></div>'
               +'</div>'
           +'</li>';
       }
       $api.html(ul, html);
 
+  }
 
+  function checked(obj, salary, id) {
+      var checkbox = $api.first(obj,'input');
+      var operation = 'minus';
+      if (checkbox.checked) {
+         operation ='add';
+      }
+      api.sendEvent({
+        name: 'sendSalaryStation',
+        extra: {
+            operation: operation,
+            salary: salary,
+            id: id
+        }
+      });
+  }
+
+  //打开课程页面
+  function openCourseWin(id, freeState)
+	{
+		api.openWin({
+		    name: 'lesson_detail',
+		    url: '../lesson_detail_win.html',
+		    pageParam: {
+          id: id,
+          freeState: freeState
+        },
+		    bounces: true,
+		    opaque: false,
+		    // bgColor:  'rgba(255,255,255,0)',
+		    vScrollBarEnabled:false,
+		    hScrollBarEnabled:true,
+		    // animation: {
+		    //         type: 'flip',
+		    //         subType: 'from_bottom',
+		    //         duration: 500
+		    //     }
+	    });
+	}
+
+  function delCourseById(id) {
+      api.ajax({
+          url: 'http://172.168.1.102:8081/eduonline-app/delCourseById.json',
+          method: 'post',
+          data: {
+              values: {
+                  shopcarId: id
+              }
+          }
+      },function(ret, err){
+          if (ret.bool) {
+              initData();
+          } else {
+              alert( JSON.stringify( err ) );
+          }
+      });
+
+  }
+
+  //点击删除图标
+  function delCourse(id) {
+    api.confirm({
+      title: '提示',
+      msg: '确定删除',
+      buttons: ['确定', '取消']
+    }, function(ret, err) {
+      var index = ret.buttonIndex;
+      if (index == 1){
+          delCourseById(id);
+      }
+    });
   }
 </script>
 </html>

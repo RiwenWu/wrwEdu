@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+  <section>
+    <div class="aui-tab" id="tab">
+        <div class="aui-tab-item aui-active" tapmode onclick="chengeData(this, '')" >全部订单</div>
+        <div class="aui-tab-item" tapmode onclick="chengeData(this, 0)">待支付</div>
+        <div class="aui-tab-item" tapmode onclick="chengeData(this, 1)">交易成功</div>
+        <div class="aui-tab-item" tapmode onclick="chengeData(this, 2)">已删除</div>
+    </div>
+  </section>
+    <div class="aui-content aui-margin-b-15">
+<!--
+        <div class="aui-card-list">
+            <div class="aui-card-list-header">
+                <div class="aui-font-size-14">
+                    2018-02-27
+                </div>
+                <div class="aui-font-size-14">
+                    订单号:1851316123
+                </div>
+            </div>
+            <div class="aui-card-list-content">
+                <ul class="aui-list aui-media-list">
+                    <li class="aui-list-item aui-list-item-middle">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-media">
+                                <img src="../../image/demo5.png" class="aui-img-round aui-list-img-sm">
+                            </div>
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-14">课程名称</div>
+                                </div>
+                                <div class="aui-list-item-text">
+                                    ￥12.35
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item aui-list-item-middle">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-media">
+                                <img src="../../image/demo5.png" class="aui-img-round aui-list-img-sm">
+                            </div>
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-14">课程名称</div>
+                                </div>
+                                <div class="aui-list-item-text">
+                                    永久有效
+                                </div>
+                                <div class="aui-list-item-text">
+                                    ￥12.35
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="aui-card-list-header aui-card-list-user aui-border-b">
+                    <div class="aui-card-list-user-info aui-pull-right">实付:$12.64</div>
+                </div>
+                <div class="aui-card-list-footer aui-border-t">
+                    <div class="aui-text-danger aui-font-size-12">
+                        待支付
+                    </div>
+                    <div class="aui-label aui-label-outlined">
+                        取消订单
+                    </div>
+                    <div class="aui-label aui-label-danger aui-label-outlined">
+                        立即支付
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="aui-card-list">
+            <div class="aui-card-list-header">
+                <div class="aui-font-size-14">
+                    2018-02-27
+                </div>
+                <div class="aui-font-size-14">
+                    订单号:1851316123
+                </div>
+            </div>
+            <div class="aui-card-list-content">
+                <ul class="aui-list aui-media-list">
+                    <li class="aui-list-item aui-list-item-middle">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-media">
+                                <img src="../../image/demo5.png" class="aui-img-round aui-list-img-sm">
+                            </div>
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-14">课程名称</div>
+                                </div>
+                                <div class="aui-list-item-text">
+                                    ￥12.35
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item aui-list-item-middle">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-media">
+                                <img src="../../image/demo5.png" class="aui-img-round aui-list-img-sm">
+                            </div>
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-14">课程名称</div>
+                                </div>
+                                <div class="aui-list-item-text">
+                                    永久有效
+                                </div>
+                                <div class="aui-list-item-text">
+                                    ￥12.35
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="aui-card-list-header aui-card-list-user aui-border-b">
+                    <div class="aui-card-list-user-info aui-pull-right">实付:$12.64</div>
+                </div>
+                <div class="aui-card-list-footer aui-border-t">
+                    <div class="aui-text-danger aui-font-size-12">
+                        待支付
+                    </div>
+                    <div class="aui-label aui-label-outlined">
+                        取消订单
+                    </div>
+                    <div class="aui-label aui-label-danger aui-label-outlined">
+                        立即支付
+                    </div>
+                </div>
+            </div>
+        </div>
+-->
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+apiready = function() {
+    api.parseTapmode();
+    initData();
+}
+
+function chengeData(obj, state){
+  var items = $api.domAll('.aui-tab-item');
+  for(var i = 0 ; i < items.length ; i++){
+    if($api.hasCls(items[i], 'aui-active')){
+      $api.removeCls(items[i], 'aui-active');
+    }
+  }
+  $api.addCls(obj,'aui-active');
+  window.console.log(state);
+}
+
+function initData() {
+    var userId = $api.getStorage("userId");
+    api.ajax({
+        url: 'http://172.168.1.102:8081/eduonline-app/queryOrderListByuserId.json',
+        method: 'post',
+        data: {
+            values: {
+                userId: userId
+            }
+        }
+    },function(ret, err){
+        if (ret.bool) {
+            var auiContent = $api.dom('.aui-content');
+            html = '';
+            for(var i = 0 ; i < ret.data.length ; i++) {
+              html += '<div class="aui-card-list">'
+                        +'<div class="aui-card-list-header">'
+                            +'<div class="aui-font-size-14">'
+                                + ret.data[i].createTime
+                            +'</div>'
+                            +'<div class="aui-font-size-14">'
+                                +'订单号: '+ret.data[i].orderno
+                            +'</div>'
+                        +'</div>';
+              html += '<div class="aui-card-list-content" id="order'+ ret.data[i].id +'"></div></div>';
+              initOrderList(ret.data[i].id);
+            }
+            $api.html(auiContent, html);
+        } else {
+            alert( JSON.stringify( err ) );
+        }
+    });
+}
+
+function initOrderList(id) {
+    api.ajax({
+        url: 'http://172.168.1.102:8081/eduonline-app/queryCourseListByorderId.json',
+        method: 'post',
+        data: {
+            values: {
+                orderId: id
+            }
+        }
+    },function(ret, err){
+
+        var courseList = '<ul class="aui-list aui-media-list">';
+        if (ret.bool) {
+
+            for(var i = 0 ; i < ret.data.length ; i++) {
+
+                courseList += '<li class="aui-list-item aui-list-item-middle">'
+                                  +'<div class="aui-media-list-item-inner">'
+                                      +'<div class="aui-list-item-media">'
+                                          +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].coursePic +'"/>'
+                                      +'</div>'
+                                      +'<div class="aui-list-item-inner aui-list-item-arrow">'
+                                          +'<div class="aui-list-item-text">'
+                                              +'<div class="aui-list-item-title aui-font-size-14">'+ ret.data[i].courseName +'</div>'
+                                          +'</div>'
+                                          +'<div class="aui-list-item-text">'
+                                              +'￥'+ ret.data[i].courseSalary
+                                          +'</div>'
+                                      +'</div>'
+                                  +'</div>'
+                              +'</li>';
+            }
+            courseList += '</ul><div class="aui-card-list-header aui-card-list-user aui-border-b">'
+                                +'<div class="aui-card-list-user-info aui-pull-right">实付:￥'+ ret.totalSalary +'</div>'
+                            +'</div>';
+            for(var i = 0 ; i < ret.data.length ; i++) {
+                if(ret.data[i].state == 0){
+                  courseList +=  '<div class="aui-card-list-footer aui-border-t">'
+                                    +'<div class="aui-text-danger aui-font-size-12">'
+                                        +'待支付'
+                                    +'</div>'
+                                    +'<div class="aui-label aui-label-outlined">'
+                                        +'取消订单'
+                                    +'</div>'
+                                    +'<div class="aui-label aui-label-danger aui-label-outlined">'
+                                        +'立即支付'
+                                    +'</div>'
+                                +'</div>';
+                } else if (ret.data[i].state == 1){
+                  courseList +=  '<div class="aui-card-list-footer aui-border-t">'
+                                    +'<div class="aui-text-danger aui-font-size-12">'
+                                        +'交易成功'
+                                    +'</div>'
+                                +'</div>';
+                } else if (ret.data[i].state == 1){
+                  courseList +=  '<div class="aui-card-list-footer aui-border-t">'
+                                    +'<div class="aui-text-danger aui-font-size-12">'
+                                        +'订单已取消'
+                                    +'</div>'
+                                +'</div>';
+                }
+            }
+            $api.html($api.dom('#order'+ id), courseList);
+
+        } else {
+            alert( JSON.stringify( ret ) );
+        }
+    });
+}
+</script>
+
+</html>

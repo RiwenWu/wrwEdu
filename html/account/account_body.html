@@ -57,7 +57,7 @@
                     <div class="aui-list-item-title">消息中心</div>
                 </div>
             </li>
-            <li class="aui-list-item" onclick="openMyshopcar()">
+            <li class="aui-list-item" tapmode onclick="openMyshopcar()">
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-cart"></i>
                 </div>
@@ -65,7 +65,7 @@
                     <div class="aui-list-item-title">我的购物车</div>
                 </div>
             </li>
-            <li class="aui-list-item">
+            <li class="aui-list-item" tapmode onclick="openMyorder()">
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-menu"></i>
                 </div>
@@ -75,7 +75,7 @@
             </li>
         </ul>
         <ul class="aui-list aui-list-in">
-            <li class="aui-list-item" onclick="openSettingPage()">
+            <li class="aui-list-item" tapmode onclick="openSettingPage()">
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-gear aui-text-info"></i>
                 </div>
@@ -175,7 +175,23 @@
             url: './my_shop_car_win.html',
             pageParam: {
                 name: 'test'
-            }
+            },
+            reload: true
+        });
+      } else {
+        openLogin();
+      }
+    }
+
+    function openMyorder() {
+      if (isLogin()) {
+        api.openWin({
+            name: 'my_order',
+            url: './my_order_win.html',
+            pageParam: {
+                name: 'test'
+            },
+            reload: true
         });
       } else {
         openLogin();

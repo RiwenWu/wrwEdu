@@ -113,7 +113,7 @@
     function changeJoin(freeState) {
       if (isLogin()){
         if(freeState == 1) {
-            openFirmOrder(courseId);
+            openFirmOrder(""+ courseId +"");
             return false;
         }
         //在localstorage中获取userId
@@ -271,11 +271,50 @@
             +'<div class="aui-bar-tab-label aui-text-warning">收藏</div>'
         +'</div>'
         +'<div class="aui-bar-tab-item aui-bg-danger aui-text-white unjoin" tapmode id="join" style="width: auto;" onclick="changeJoin('+ freeState +')">+加入学习</div>'
-        var shopCar = '<div class="aui-bar-tab-item aui-bg-warning aui-text-white" tapmode id="shopCart" style="width: auto;">加入购物车</div>'
+        var shopCar = '<div class="aui-bar-tab-item aui-bg-warning aui-text-white" tapmode id="shopCart" style="width: auto;" onclick="putIntoShopCar()">加入购物车</div>'
         if( freeState == 1){
             html += shopCar;
         }
         $api.html($api.dom('#footer'), html);
+    }
+
+    //加入购物车
+    function putIntoShopCar(){
+        if(isLogin()){
+          //在localstorage中获取userId
+          var userId = $api.getStorage("userId");
+          api.ajax({
+              url: 'http://172.168.1.102:8081/eduonline-app/insertCourseIntoCar.json',
+              method: 'post',
+              data: {
+                  values: {
+                      userId: userId,
+                      courseId: courseId
+                  }
+              }
+          },function(ret, err){
+              if (ret.bool) {
+                  if(ret.code == 1) {
+                    api.toast({
+                        msg: "成功加入购物车，请账号 我的购物车中查看",
+                        duration: 2000,
+                        location: 'buttom'
+                    });
+                  } else if(ret.code == 2) {
+                    api.toast({
+                        msg: "已加入购物车，无需重复操作",
+                        duration: 2000,
+                        location: 'buttom'
+                    });
+                  }
+              } else {
+                  alert( JSON.stringify( err ) );
+              }
+          });
+
+        } else {
+          openLogin();
+        }
     }
 
     //初始化数据

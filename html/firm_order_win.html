@@ -33,6 +33,7 @@
         //获取跳转页面传递的参数
         var courseIds = api.pageParam.courseIds;
         listId = [courseIds];
+        window.console.log(listId);
 
         api.parseTapmode();
 
@@ -41,7 +42,9 @@
     };
 
     function closeWin(){
+        window.console.log("close");
         api.closeWin({
+            name: 'firm_order'
         });
     }
 
@@ -84,16 +87,26 @@
               $api.append(totalSalary, html);
               openFirmOrderFrm(ret.data);
           } else {
+            if(ret.code == 1){
+              api.toast({
+                  msg: "请选择购买的课程",
+                  duration: 2000,
+                  location: 'middle'
+              });
+              setTimeout(closeWin, 1000);
+            } else {
               alert( JSON.stringify( err ) );
+            }
           }
       });
 
     }
 
+    //提交订单
     function submitOrder() {
       var userId = $api.getStorage("userId");
       api.ajax({
-          url: 'http://192.168.1.101:3101/upLoad',
+          url: 'http://172.168.1.102:8081/eduonline-app/firmOrder.json',
           method: 'post',
           data: {
               values: {
@@ -102,7 +115,7 @@
               }
           }
       },function(ret, err){
-          if (ret) {
+          if (ret.bool) {
               alert( JSON.stringify( ret ) );
           } else {
               alert( JSON.stringify( err ) );

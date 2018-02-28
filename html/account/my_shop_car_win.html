@@ -18,7 +18,7 @@
           <div class="aui-bar-tab-label">合计: ￥</div>
       </div>
       <div class="aui-bar-tab-item aui-bg-danger aui-pull-right" tapmode id="join" style="width: 6rem;" onclick="">
-        <div class="aui-bar-tab-label aui-text-white aui-font-size-18">提交订单</div>
+        <div class="aui-bar-tab-label aui-text-white aui-font-size-18" tapmode onclick="openFirmOrder(listIds)">确认购买</div>
       </div>
     </footer>
 </body>
@@ -26,18 +26,16 @@
 <script type="text/javascript" src="../../script/common.js"></script>
 <script type="text/javascript">
 
-    //获取传递过来的courseId
-    var listId
+    var listIds = "";
+    var totalSalary = 0.00;
 
     apiready = function(){
-        //获取跳转页面传递的参数
-        var courseIds = api.pageParam.courseIds;
-        listId = [courseIds];
 
         api.parseTapmode();
+
+        listendSalaryStation();
         openFirmOrderFrm();
-        //初始化数据
-        //initData();
+
     };
 
     function closeWin(){
@@ -68,26 +66,42 @@
       })
     }
 
-    function initData() {
-      api.ajax({
-          url: 'http://172.168.1.102:8081/eduonline-app/queryCourseListByIds.json',
-          method: 'post',
-          data: {
-              values: {
-                  courseIds: listId
-              }
-          }
-      },function(ret, err){
-          if (ret.bool) {
-              var html = '<div class="aui-bar-tab-label aui-text-danger">'+ ret.totalSalary +'</div>';
-              var totalSalary = $api.dom('#totalSalary');
-              $api.append(totalSalary, html);
-              openFirmOrderFrm(ret.data);
-          } else {
-              alert( JSON.stringify( err ) );
-          }
-      });
+    function listendSalaryStation() {
+        api.addEventListener({
+            name: 'sendSalaryStation'
+        }, function(ret, err) {
+            if (listIds != ''){
+                listIds += ',' + ret.value.id ;
+            } else {
+              listIds += ret.value.id ;
+            }
+            if (ret.value.operation == 'add') {
+              totalSalary += ret.value.salary;
+            } else if(ret.value.operation == 'minus') {
+              totalSalary = totalSalary - ret.value.salary;
+            }
+            $api.html($api.dom('#totalSalary'), '<div class="aui-bar-tab-label">合计: ￥'+ totalSalary +'</div>');
 
+        });
+    }
+
+    //打开确认订单页面
+    function openFirmOrder(courseIds) {
+        if(courseIds == ""){
+          api.toast({
+              msg: '请选择要提交订单的课程',
+              duration: 2000,
+              location: 'middle'
+          });
+          return false;
+        }
+        api.openWin({
+            name: 'firm_order',
+            url: '../firm_order_win.html',
+            pageParam: {
+                courseIds: courseIds
+            }
+        });
     }
 </script>
 </html>
