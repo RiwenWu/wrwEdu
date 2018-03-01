@@ -14,7 +14,7 @@
 <body>
   <section>
     <div class="aui-tab" id="tab">
-        <div class="aui-tab-item aui-active" tapmode onclick="chengeData(this, '')" >全部订单</div>
+        <div class="aui-tab-item aui-active" tapmode onclick="chengeData(this, 'all')" >全部订单</div>
         <div class="aui-tab-item" tapmode onclick="chengeData(this, 0)">待支付</div>
         <div class="aui-tab-item" tapmode onclick="chengeData(this, 1)">交易成功</div>
         <div class="aui-tab-item" tapmode onclick="chengeData(this, 2)">已删除</div>
@@ -150,125 +150,218 @@
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript">
-apiready = function() {
-    api.parseTapmode();
-    initData();
-}
-
-function chengeData(obj, state){
-  var items = $api.domAll('.aui-tab-item');
-  for(var i = 0 ; i < items.length ; i++){
-    if($api.hasCls(items[i], 'aui-active')){
-      $api.removeCls(items[i], 'aui-active');
+    apiready = function() {
+        api.parseTapmode();
+        initData();
     }
-  }
-  $api.addCls(obj,'aui-active');
-  window.console.log(state);
-}
 
-function initData() {
-    var userId = $api.getStorage("userId");
-    api.ajax({
-        url: 'http://172.168.1.102:8081/eduonline-app/queryOrderListByuserId.json',
-        method: 'post',
-        data: {
-            values: {
-                userId: userId
-            }
+    function chengeData(obj, state){
+      var items = $api.domAll('.aui-tab-item');
+      for(var i = 0 ; i < items.length ; i++){
+        if($api.hasCls(items[i], 'aui-active')){
+          $api.removeCls(items[i], 'aui-active');
         }
-    },function(ret, err){
-        if (ret.bool) {
-            var auiContent = $api.dom('.aui-content');
-            html = '';
-            for(var i = 0 ; i < ret.data.length ; i++) {
-              html += '<div class="aui-card-list">'
-                        +'<div class="aui-card-list-header">'
-                            +'<div class="aui-font-size-14">'
-                                + ret.data[i].createTime
-                            +'</div>'
-                            +'<div class="aui-font-size-14">'
-                                +'订单号: '+ret.data[i].orderno
-                            +'</div>'
-                        +'</div>';
-              html += '<div class="aui-card-list-content" id="order'+ ret.data[i].id +'"></div></div>';
-              initOrderList(ret.data[i].id);
-            }
-            $api.html(auiContent, html);
-        } else {
-            alert( JSON.stringify( err ) );
-        }
-    });
-}
+      }
+      $api.addCls(obj,'aui-active');
+      if(state == 'all'){
+        initData();
+      } else {
+        changeDataByState(state);
+      }
+    }
 
-function initOrderList(id) {
-    api.ajax({
-        url: 'http://172.168.1.102:8081/eduonline-app/queryCourseListByorderId.json',
-        method: 'post',
-        data: {
-            values: {
-                orderId: id
-            }
-        }
-    },function(ret, err){
-
-        var courseList = '<ul class="aui-list aui-media-list">';
-        if (ret.bool) {
-
-            for(var i = 0 ; i < ret.data.length ; i++) {
-
-                courseList += '<li class="aui-list-item aui-list-item-middle">'
-                                  +'<div class="aui-media-list-item-inner">'
-                                      +'<div class="aui-list-item-media">'
-                                          +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].coursePic +'"/>'
-                                      +'</div>'
-                                      +'<div class="aui-list-item-inner aui-list-item-arrow">'
-                                          +'<div class="aui-list-item-text">'
-                                              +'<div class="aui-list-item-title aui-font-size-14">'+ ret.data[i].courseName +'</div>'
-                                          +'</div>'
-                                          +'<div class="aui-list-item-text">'
-                                              +'￥'+ ret.data[i].courseSalary
-                                          +'</div>'
-                                      +'</div>'
-                                  +'</div>'
-                              +'</li>';
-            }
-            courseList += '</ul><div class="aui-card-list-header aui-card-list-user aui-border-b">'
-                                +'<div class="aui-card-list-user-info aui-pull-right">实付:￥'+ ret.totalSalary +'</div>'
-                            +'</div>';
-            for(var i = 0 ; i < ret.data.length ; i++) {
-                if(ret.data[i].state == 0){
-                  courseList +=  '<div class="aui-card-list-footer aui-border-t">'
-                                    +'<div class="aui-text-danger aui-font-size-12">'
-                                        +'待支付'
-                                    +'</div>'
-                                    +'<div class="aui-label aui-label-outlined">'
-                                        +'取消订单'
-                                    +'</div>'
-                                    +'<div class="aui-label aui-label-danger aui-label-outlined">'
-                                        +'立即支付'
-                                    +'</div>'
-                                +'</div>';
-                } else if (ret.data[i].state == 1){
-                  courseList +=  '<div class="aui-card-list-footer aui-border-t">'
-                                    +'<div class="aui-text-danger aui-font-size-12">'
-                                        +'交易成功'
-                                    +'</div>'
-                                +'</div>';
-                } else if (ret.data[i].state == 1){
-                  courseList +=  '<div class="aui-card-list-footer aui-border-t">'
-                                    +'<div class="aui-text-danger aui-font-size-12">'
-                                        +'订单已取消'
-                                    +'</div>'
-                                +'</div>';
+    function changeDataByState(state) {
+        var userId = $api.getStorage("userId");
+        api.ajax({
+            url: 'http://172.168.1.102:8081/eduonline-app/queryOrderListByuserId.json',
+            method: 'post',
+            data: {
+                values: {
+                    userId: userId,
+                    state: state
                 }
             }
-            $api.html($api.dom('#order'+ id), courseList);
+        },function(ret, err){
+            if (ret.bool) {
+                var auiContent = $api.dom('.aui-content');
+                html = '';
+                for(var i = 0 ; i < ret.data.length ; i++) {
+                  html += '<div class="aui-card-list">'
+                            +'<div class="aui-card-list-header">'
+                                +'<div class="aui-font-size-14">'
+                                    + ret.data[i].createTime
+                                +'</div>'
+                                +'<div class="aui-font-size-14">'
+                                    +'订单号: '+ret.data[i].orderno
+                                +'</div>'
+                            +'</div>';
+                  html += '<div class="aui-card-list-content" id="order'+ ret.data[i].id +'"></div></div>';
+                  initOrderList(ret.data[i].id);
+                }
+                $api.html(auiContent, html);
+            } else {
+                alert( JSON.stringify( err ) );
+            }
+        });
+    }
 
-        } else {
-            alert( JSON.stringify( ret ) );
-        }
-    });
-}
+    function initData() {
+        var userId = $api.getStorage("userId");
+        api.ajax({
+            url: 'http://172.168.1.102:8081/eduonline-app/queryOrderListByuserId.json',
+            method: 'post',
+            data: {
+                values: {
+                    userId: userId
+                }
+            }
+        },function(ret, err){
+            if (ret.bool) {
+                var auiContent = $api.dom('.aui-content');
+                html = '';
+                for(var i = 0 ; i < ret.data.length ; i++) {
+                  html += '<div class="aui-card-list">'
+                            +'<div class="aui-card-list-header">'
+                                +'<div class="aui-font-size-14">'
+                                    + ret.data[i].createTime
+                                +'</div>'
+                                +'<div class="aui-font-size-14">'
+                                    +'订单号: '+ret.data[i].orderno
+                                +'</div>'
+                            +'</div>';
+                  html += '<div class="aui-card-list-content" id="order'+ ret.data[i].id +'"></div></div>';
+                  initOrderList(ret.data[i].id);
+                }
+                $api.html(auiContent, html);
+            } else {
+                alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function initOrderList(id) {
+        api.ajax({
+            url: 'http://172.168.1.102:8081/eduonline-app/queryCourseListByorderId.json',
+            method: 'post',
+            data: {
+                values: {
+                    orderId: id
+                }
+            }
+        },function(ret, err){
+
+            var courseList = '<ul class="aui-list aui-media-list">';
+            if (ret.bool) {
+
+                for(var i = 0 ; i < ret.data.length ; i++) {
+
+                    courseList += '<li class="aui-list-item aui-list-item-middle" tapmode onclick="openCourseWin('+ ret.data[i].courseId +', 1)">'
+                                      +'<div class="aui-media-list-item-inner">'
+                                          +'<div class="aui-list-item-media">'
+                                              +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].coursePic +'"/>'
+                                          +'</div>'
+                                          +'<div class="aui-list-item-inner aui-list-item-arrow">'
+                                              +'<div class="aui-list-item-text">'
+                                                  +'<div class="aui-list-item-title aui-font-size-14">'+ ret.data[i].courseName +'</div>'
+                                              +'</div>'
+                                              +'<div class="aui-list-item-text">'
+                                                  +'￥'+ ret.data[i].courseSalary
+                                              +'</div>'
+                                          +'</div>'
+                                      +'</div>'
+                                  +'</li>';
+                }
+                courseList += '</ul><div class="aui-card-list-header aui-card-list-user aui-border-b">'
+                                    +'<div class="aui-card-list-user-info aui-pull-right">实付:￥'+ ret.totalSalary +'</div>'
+                                +'</div>';
+                for(var i = 0 ; i < ret.data.length ; i++) {
+                    if(ret.data[i].state == 0){
+                      courseList +=  '<div class="aui-card-list-footer aui-border-t">'
+                                        +'<div class="aui-text-danger aui-font-size-12">'
+                                            +'待支付'
+                                        +'</div>'
+                                        +'<div class="aui-label aui-label-outlined" tapmode onclick="delOrder('+ id +', 2)">'
+                                            +'取消订单'
+                                        +'</div>'
+                                        +'<div class="aui-label aui-label-danger aui-label-outlined">'
+                                            +'立即支付'
+                                        +'</div>'
+                                    +'</div>';
+                    } else if (ret.data[i].state == 1){
+                      courseList +=  '<div class="aui-card-list-footer aui-border-t">'
+                                        +'<div class="aui-text-danger aui-font-size-12">'
+                                            +'交易成功'
+                                        +'</div>'
+                                    +'</div>';
+                    } else if (ret.data[i].state == 2){
+                      courseList +=  '<div class="aui-card-list-footer aui-border-t">'
+                                        +'<div class="aui-text-danger aui-font-size-12">'
+                                            +'订单已取消'
+                                        +'</div>'
+                                    +'</div>';
+                    }
+                }
+                $api.html($api.dom('#order'+ id), courseList);
+
+            } else {
+                alert( JSON.stringify( ret ) );
+            }
+        });
+    }
+
+    function openCourseWin(id, freeState)
+    {
+      api.openWin({
+          name: 'lesson_detail',
+          url: '../lesson_detail_win.html',
+          pageParam: {
+            id: id,
+            freeState: freeState
+          },
+          bounces: true,
+          opaque: false,
+          // bgColor:  'rgba(255,255,255,0)',
+          vScrollBarEnabled:false,
+          hScrollBarEnabled:true,
+          // animation: {
+          //         type: 'flip',
+          //         subType: 'from_bottom',
+          //         duration: 500
+          //     }
+        });
+    }
+
+    function delOrder(id, state) {
+      api.confirm({
+          title: '提示',
+          msg: '确定要删除订单',
+          buttons: ['确定', '取消']
+      }, function(ret, err) {
+          if(ret.buttonIndex == 1){
+              api.ajax({
+                  url: 'http://172.168.1.102:8081/eduonline-app/updateByPrimaryKeySelective.json',
+                  method: 'post',
+                  data: {
+                      values: {
+                          orderId: id,
+                          state: state
+                      }
+                  }
+              },function(ret, err){
+                  if (ret.bool) {
+                    api.toast({
+                      msg: '删除订单成功',
+                      duration: 2000,
+                      location: 'middle'
+                    });
+                  } else {
+                      alert( JSON.stringify( ret ) );
+                  }
+              });
+
+          }
+      });
+    }
 </script>
 
 </html>

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style type="text/css">
+        .aui-list .aui-list-item-media {
+            width: 6rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="aui-content">
+        <ul class="aui-list aui-media-list">
+
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+
+    function openCourseWin(id) {
+      api.openWin({
+  		    name: 'lesson_detail',
+  		    url: './lesson_detail_win.html',
+  		    pageParam: {
+            id: id
+          },
+  		    bounces: true,
+  		    opaque: false,
+  		    // bgColor:  'rgba(255,255,255,0)',
+  		    vScrollBarEnabled:false,
+  		    hScrollBarEnabled:true,
+  		    // animation: {
+  		    //         type: 'flip',
+  		    //         subType: 'from_bottom',
+  		    //         duration: 500
+  		    //     }
+  	    })
+    }
+
+
+    function initData(inputValue) {
+
+      api.ajax({
+          url: 'http://172.168.1.102:8081/eduonline-app/findCourseByinput.json',
+          method: 'post',
+          data: {
+              values: {
+                  inputValue: inputValue
+              }
+          }
+      },function(ret, err){
+          if (ret.bool) {
+              var ul = $api.dom('.aui-list');
+              var html = "";
+              for (var i = 0; i < ret.data.length; i++) {
+                html += '<li class="aui-list-item" onclick="openCourseWin(' + ret.data[i].id + ')">'
+                    +'<div class="aui-media-list-item-inner">'
+                        +'<div class="aui-list-item-inner">'
+                            +'<div class="aui-list-item-text">'
+                                +'<div class="aui-list-item-title aui-font-size-18">' + ret.data[i].name + '</div>'
+                            +'</div>'
+                        +'</div>'
+                        +'<div class="aui-list-item-media">'
+                            +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].picurl +'">'
+                        +'</div>'
+                    +'</div>'
+                +'</li>';
+              }
+              $api.html(ul, html);
+          } else {
+              alert( JSON.stringify( err ) );
+          }
+      });
+    }
+
+    apiready = function() {
+        //获取传递过来的courseId
+        var inputValue = api.pageParam.inputValue;
+        api.parseTapmode();
+
+        api.addEventListener({
+            name: 'search'
+        }, function(ret, err){
+            if( ret ){
+                  initData(ret.value.inputValue)
+            }else{
+                 alert( JSON.stringify( ret ) );
+            }
+        });
+
+    };
+</script>
+</html>

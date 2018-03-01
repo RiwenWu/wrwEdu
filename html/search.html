@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
   <title>HTML</title>
-  
+
   <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -13,7 +13,7 @@
 	<style>
 		html {width: 100%;height: 100%;}
 		body {background: #EBEFF2;width: 100%;height: 100%;}
-		
+
 		#topbar {background: #EBECF0; height:50px; border-bottom: 1px solid #DDDFE3;}
 		.left_back{float: left;padding: 11px 15px 11px 15px;}
 		.right_btn{float: right;}
@@ -32,52 +32,73 @@
 </head>
 
 <body>
-	
+
 	<div id="topbar">
-		<form action="" class="inputbar">
-			<img src="../image/topbar_search.png" alt="" class="searchimg">
-			<input type="text" class="text"  placeholder="输入视频名称或主演">
-			<img src="../image/search_bottom.png" alt="" class="searchbottom">
-		</form>
+		<div class="inputbar">
+        <i class="aui-iconfont aui-icon-search"></i>
+        <form onsubmit="return search_list()">
+            <input type="search" placeholder="请输入搜索内容" id="search-input">
+        </form>
+		</div>
         <p id="topbar_title" class="right_btn"   tapmode="btn_click" onclick="goback()">取消</p>
-                
+
     </div>
 
 
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script>
-	function emptyopt () {
-	}
-	
-	function goback ()     
+	function search_list(){
+     var inputValue = $api.dom('#search-input').value;
+     if (inputValue == '') {
+         api.toast({
+             msg: '请输入要搜索的内容',
+             duration: 2000,
+             location: 'middle'
+         });
+         return;
+     }
+     api.sendEvent({
+         name: 'search',
+         extra: {
+             inputValue: inputValue
+         }
+     });
+
+  }
+
+  function openSearchBody() {
+    var header = $api.byId('topbar');
+    $api.fixStatusBar(header);
+    var headerPos = $api.offset(header);
+
+     api.openFrame ({
+         name: 'search_body',
+         url: './search_body.html',
+         rect:{
+             x:0,
+             y:headerPos.h,
+             w:'auto',
+             h:api.winHeight-headerPos.h
+         },
+         bounces: false,
+         opaque: false,
+         bgColor: 'rgba(70 , 70, 70,0)',
+         vScrollBarEnabled:true,
+         hScrollBarEnabled:true
+     });
+
+
+  }
+
+	function goback ()
 	{
 		api.closeWin({
 		    name: 'search'
 		});
 	}
     apiready = function(){
-
-	    var header = $api.byId('topbar');
-	    $api.fixStatusBar(header); 
-	    var headerPos = $api.offset(header);
-
-	    // api.openFrame ({
-	    //     name: 'warehouse_body',
-	    //     url: './warehouse/warehouse_body.html',
-	    //     rect:{
-	    //         x:0,
-	    //         y:headerPos.h,
-	    //         w:'auto',
-	    //         h:api.frameHeight - headerPos.h
-	    //     },
-	    //     pageParam: {name: 'test'},
-	    //     bounces: false,
-	    //     opaque: false,
-	    //     bgColor: 'rgba(70 , 70, 70,0)',
-	    //     vScrollBarEnabled:true,
-	    //     hScrollBarEnabled:true
-	    // });
+        openSearchBody();
 	}
 
 </script>

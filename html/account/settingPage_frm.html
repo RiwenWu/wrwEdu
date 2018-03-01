@@ -71,7 +71,9 @@
         }, function(ret, err) {
             if(ret.buttonIndex == 1) {
                 $api.rmStorage('userId');
-                changeTologout();
+            }
+            if($api.getStorage("userId") == undefined ){
+              changeTologout();
             }
         });
     }
