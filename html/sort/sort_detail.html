@@ -25,6 +25,16 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript">
     apiready = function(){
+
+      //改变头部标题
+      //获取传过来的参数
+      var textbtn = api.pageParam['textbtn'];
+      var sortId = api.pageParam['sortId'];
+      //获取要替换的el
+      var textheader = $api.dom('.aui-title');
+      //替换
+      $api.html(textheader, textbtn);
+
         api.parseTapmode();
         var header = $api.byId('aui-header');
         $api.fixStatusBar(header);
@@ -39,16 +49,11 @@
                 y: headerPos.h,
                 w: 'auto',
                 h: 'auto'
+            },
+            pageParam: {
+                sortId: sortId
             }
         })
-
-        //改变头部标题
-        //获取传过来的参数
-        var textbtn = api.pageParam['textbtn'];
-        //获取要替换的el
-        var textheader = $api.dom('.aui-title');
-        //替换
-        $api.html(textheader, textbtn);
 
     };
 

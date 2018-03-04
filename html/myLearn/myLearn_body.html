@@ -64,8 +64,8 @@
   </section>
   <section>
     <div class="aui-tab" id="tab">
-        <div class="aui-tab-item" onclick="" >我的计划</div>
-        <div class="aui-tab-item" onclick="openMyCollection()">我的收藏</div>
+        <div class="aui-tab-item" tapmode onclick="openMyPlan()" >我的计划</div>
+        <div class="aui-tab-item" tapmode onclick="openMyCollection()">我的收藏</div>
         <div class="aui-tab-item" onclick="">我的下载</div>
     </div>
     <div class="imgbody">
@@ -254,7 +254,7 @@
       //在localstorage中获取userId
       var userId = $api.getStorage("userId");
       api.ajax({
-          url: 'http://172.168.1.102:8081/eduonline-app/queryJoinCourseListById.json',
+          url: 'http://172.16.169.9:8081/eduonline-app/queryJoinCourseListById.json',
           method: 'post',
           data: {
               values: {
@@ -269,7 +269,6 @@
               } else {
                 html = '<li class="aui-list-header">正在学习</li>';
                 for (var i = 0; i < ret.data.length; i++) {
-                    window.console.log(ret.data[i].planfinish_time);
                     html += '<li class="aui-list-item" onclick="openCourseWin(' + ret.data[i].id + ')">'
                         +'<div class="aui-media-list-item-inner">'
                             +'<div class="aui-list-item-inner">'
@@ -282,7 +281,7 @@
                                 +'</div>'
                             +'</div>'
                             +'<div class="aui-list-item-media">'
-                                +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].picurl +'">'
+                                +'<img src="http://172.16.169.9:8081/eduonline/'+ ret.data[i].picurl +'">'
                             +'</div>'
                         +'</div>'
                     +'</li>';
@@ -315,6 +314,20 @@
   		    //         duration: 500
   		    //     }
   	    })
+    }
+
+    function openMyPlan(){
+      if(isLogin()){
+        api.openWin({
+            name: 'myPlan',
+            url: './my_plan_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+      } else {
+        openLogin();
+      }
     }
 </script>
 </html>

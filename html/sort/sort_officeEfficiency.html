@@ -27,25 +27,25 @@
             <li class="aui-list-item">
               <div class="aui-row-padded">
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn" onclick="openSortDetail(this)">PPT</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 11)">PPT</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn" onclick="openSortDetail(this)">Excel</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 12)">Excel</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn" onclick="openSortDetail(this)">Word</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 13)">Word</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn" onclick="openSortDetail(this)">Project</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 15)">Project</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn" onclick="openSortDetail(this)">Outlook</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 16)">Outlook</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn" onclick="openSortDetail(this)">Keynote</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 17)">Keynote</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn" onclick="openSortDetail(this)">更多软件</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 18)">更多软件</div>
                 </div>
               </div>
             </li>
@@ -57,10 +57,10 @@
             <li class="aui-list-item">
               <div class="aui-row-padded">
                 <div class="aui-col-xs-6">
-                    <div class="aui-btn" onclick="openSortDetail(this)">时间管理</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 19)">时间管理</div>
                 </div>
                 <div class="aui-col-xs-6">
-                    <div class="aui-btn" onclick="openSortDetail(this)">思维导图</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 20)">思维导图</div>
                 </div>
 
               </div>
@@ -73,10 +73,10 @@
             <li class="aui-list-item">
               <div class="aui-row-padded">
                 <div class="aui-col-xs-6">
-                    <div class="aui-btn" onclick="openSortDetail(this)">基础操作</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 21)">基础操作</div>
                 </div>
                 <div class="aui-col-xs-6">
-                    <div class="aui-btn" onclick="openSortDetail(this)">常用工具</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 22)">常用工具</div>
                 </div>
               </div>
             </li>
@@ -92,7 +92,7 @@
     };
 
     //跳转专题列表
-    function openSortDetail(el) {
+    function openSortDetail(el, sortId) {
 
         //获取点击btn的内容
         var textbtn = $api.html(el);
@@ -101,7 +101,8 @@
             name: 'sort_detail',
             url: './sort_detail.html',
             pageParam: {
-                textbtn: textbtn
+                textbtn: textbtn,
+                sortId: sortId
             }
         });
 

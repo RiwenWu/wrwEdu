@@ -59,40 +59,17 @@
 	<div class="divider"></div>
 	<!-- 热点 -->
 	<div class="subtitle">精选好课</div>
-	<ul class="recommand_row">
-		<li class="recommand_card" tapmod="card_hover" onclick="openCourseWin()">
-			<div class="innerCard">
-				<img src="../../image/videocover01.jpg" alt="">
-				<div class="videotitle">林依晨订婚宴现场曝光</div>
-			</div>
-		</li>
-		<li class="recommand_card"  tapmod="card_hover" onclick="openCourseWin()">
-			<div class="innerCard">
-				<img src="../../image/videocover02.jpg" alt="">
-				<div class="videotitle">网传张歆艺杨树鹏离婚</div>
-			</div>
-		</li>
-	</ul>
-	<ul class="recommand_row">
-		<li class="recommand_card"  tapmod="card_hover" onclick="openCourseWin()">
-			<div class="innerCard">
-				<img src="../../image/tvcover_04.jpg" alt="">
-				<div class="videotitle">曝王菲全力备孕黏紧霆锋</div>
-			</div>
-		</li>
-		<li class="recommand_card" tapmod="card_hover" onclick="openCourseWin()">
-			<div class="innerCard">
-				<img src="../../image/tvcover_01.jpg" alt="">
-				<div class="videotitle">向太暗示蓝洁瑛变疯真相</div>
-			</div>
-		</li>
-	</ul>
+  <section class="aui-content aui-padded-l-5 aui-padded-r-10 aui-padded-t-5">
+      <div class="aui-row aui-row-padded" id="commendCourse">
+
+      </div>
+  </section>
 
 	<div class="divider"></div>
 	<!-- 全部课程 -->
 	<div class="subtitle">全部课程</div>
   <section class="aui-content aui-padded-l-5 aui-padded-r-10 aui-padded-t-5">
-      <div class="aui-row aui-row-padded">
+      <div class="aui-row aui-row-padded" id="allCourse">
 
       </div>
   </section>
@@ -140,29 +117,35 @@
 		mySwiper.startAutoplay();
 	}
 
+  //初始化全部课程
   function initData(pageNumber) {
     api.ajax({
-        url: 'http://172.168.1.102:8081/eduonline-app/queryallcourseBypage.json?PAGENO=' + pageNumber,
+        url: 'http://172.16.169.9:8081/eduonline-app/queryallcourseBypage.json?PAGENO=' + pageNumber,
         method: 'get'
     },function(ret, err){
         if (ret.bool) {
-            var element = $api.dom('.aui-row');
+            var element = $api.dom('#allCourse');
             var html = '';
-            var freeState;
+            var freeState = '';
+            var offlineCourse = '';
             if(ret.data.length != 0){
                 for (var i = 0; i < ret.data.length; i++) {
                     if(ret.data[i].free_state == 1){
                         freeState = '<div class="aui-label aui-label-danger aui-label-outlined">付费</div>';
                     }
+                    if(ret.data[i].offlinecourse_id != undefined){
+                        offlineCourse = '<div class="aui-label aui-label-danger aui-label-outlined">有线下课</div>';
+                    }
                     html += '<div class="aui-col-xs-6" onclick="openCourseWin('+ ret.data[i].id +', '+ ret.data[i].free_state +')">'
                         +'<div class="aui-card-list">'
                             +'<div class="aui-card-list-content">'
-                                +'<img src="http://172.168.1.102:8081/eduonline/'+ ret.data[i].picurl +'">'
+                                +'<img src="http://172.16.169.9:8081/eduonline-web/'+ ret.data[i].picurl +'">'
                             +'</div>'
-                            +'<div class="aui-card-list-header aui-font-size-14">' + ret.data[i].name + freeState +'</div>'
+                            +'<div class="aui-card-list-header aui-font-size-14">' + ret.data[i].name  + offlineCourse + freeState +'</div>'
                         +'</div>'
                     +'</div>';
 
+                    offlineCourse = '';
                     freeState = '';
               }
               if(pageNumber == 1){
@@ -183,11 +166,45 @@
     });
   }
 
+  //初始化精选好课
+  function initCommendCourse() {
+      api.ajax({
+          url: 'http://172.16.169.9:8081/eduonline-app/queryComnendCourseList.json',
+          method: 'post'
+      },function(ret, err){
+          if (ret.bool) {
+              var html = '';
+              var freeState = '';
+              for (var i = 0; i < ret.data.length; i++) {
+                if(ret.data[i].free_state == 1){
+                    freeState = '<div class="aui-label aui-label-danger aui-label-outlined">付费</div>';
+                }
+                html += '<div class="aui-col-xs-6" onclick="openCourseWin('+ ret.data[i].id +', '+ ret.data[i].free_state +')">'
+                    +'<div class="aui-card-list">'
+                        +'<div class="aui-card-list-content">'
+                            +'<img src="http://172.16.169.9:8081/eduonline-web/'+ ret.data[i].picurl +'">'
+                        +'</div>'
+                        +'<div class="aui-card-list-header aui-font-size-14">' + ret.data[i].name + freeState +'</div>'
+                    +'</div>'
+                +'</div>';
+
+                freeState = '';
+              }
+              $api.html($api.dom('#commendCourse'), html);
+
+          } else {
+              alert( JSON.stringify( err ) );
+          }
+      });
+
+  }
+
 	apiready = function (){
     var pageNo = 1;
 
     //初始化数据
     initData(1);
+    initCommendCourse();
 
 		api.setRefreshHeaderInfo({
 			visible: true,
@@ -198,6 +215,7 @@
 		}, function(ret, err){
 		    api.refreshHeaderLoadDone();
         initData(1);
+        initCommendCourse();
 		});
 
     //监听是否滑倒底部

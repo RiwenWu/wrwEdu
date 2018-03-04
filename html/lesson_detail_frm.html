@@ -152,7 +152,7 @@
     //初始化介绍
     function initIntroduce(Cid) {
       api.ajax({
-          url: 'http://172.168.1.102:8081/eduonline-app/queryCourseById.json',
+          url: 'http://172.16.169.9:8081/eduonline-app/queryCourseById.json',
           method: 'post',
           data: {
             values: {
@@ -163,16 +163,20 @@
           if (ret.bool) {
             //  加载封面
             var cover =  $api.dom('.aui-slide-node');
-            var html1 = '<img src="http://172.168.1.102:8081/eduonline/'+ ret.data.picurl +'"/>';
+            var html1 = '<img src="http://172.16.169.9:8081/eduonline/'+ ret.data.picurl +'"/>';
             $api.html(cover, html1);
 
             // 加载介绍
             var introduce = $api.dom('#goods-detail');
-            var isFree;
+            var isFree = '';
+            var offlineCourse = '';
+            if (ret.data.offlinecourse_id != undefined){
+              offlineCourse = '<div class="aui-label aui-label-info" tapmode onclick="showOfflineCourse('+ ret.data.offlinecourse_id +')">点击查看线下课</div>';
+            }
             if (ret.data.free_state == '0'){
-              isFree = '<div class="aui-label aui-label-info">免费</div>';
+              isFree = offlineCourse + '<div class="aui-label aui-label-info">免费</div>';
             } else {
-              isFree = '<div class="aui-label aui-label-danger aui-label-outlined">付费 ￥'+ ret.data.salary +'</div>';
+              isFree = offlineCourse + '<div class="aui-label aui-label-danger aui-label-outlined">付费 ￥'+ ret.data.salary +'</div>';
             }
             var html2 = '<section class="aui-content-padded">'
                           +'<div class="aui-card-list">'
@@ -198,7 +202,7 @@
     //初始化目录
     function initMenu(Cid) {
       api.ajax({
-          url: 'http://172.168.1.102:8081/eduonline-app/queryVideoListByCourseId.json',
+          url: 'http://172.16.169.9:8081/eduonline-app/queryVideoListByCourseId.json',
           method: 'post',
           data: {
               values: {
@@ -221,6 +225,25 @@
           }
       });
 
+    }
+
+    //参加线下课程
+    function showOfflineCourse(id) {
+        api.openFrame({
+              name: 'offlineCourseDialog',
+              url: './offlineCourseDialog.html',
+              pageParam: {
+                  id: id
+              },
+              rect: {
+                x:0,
+                y:0,
+                w:api.winWidth,
+                h:api.winHeight
+              },
+              bgColor: 'rgba(0,0,0,0.6)',
+          bounces: false
+        });
     }
 
     apiready = function(){

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <style>
+    	html,body{
+    		height: 98%;
+			background: transparent;
+			-webkit-touch-callout: none;
+			font-family: Tahoma, Geneva, sans-serif;
+			font-style: normal;
+		}
+		#dialog{
+			background-color: #e7e7e7; border-radius: 6px;
+			position: absolute; margin: auto;
+			left: 0; right: 0; top: 0; bottom: 0;
+			width: 414px; height: 450px;
+			-webkit-transition: all .1s;
+			transition:all .1s;
+			-webkit-transform: scale(0);
+			transform:scale(0);
+			opacity: 0;
+		}
+		#dialog.in{
+			-webkit-transform: scale(1);
+			transform:scale(1);
+			opacity: 1;
+		}
+		img{
+			padding:15px;
+		}
+    </style>
+</head>
+<body>
+	<div id="dialog">
+    <section class="aui-content-padded">
+      <div class="aui-card-list">
+
+      </div>
+    </section>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/zepto.min.js"></script>
+<script type="text/javascript">
+
+  var id;
+	$('#dialog').addClass('in');
+	apiready = function(){
+
+    api.parseTapmode();
+    //获取跳转页面传递的参数
+    id = api.pageParam.id;
+
+		$(document.body).on('touchend',function(e){
+			var dialog = $("#dialog")[0];
+			if(!$.contains(dialog, e.target)){
+				$('#dialog').removeClass('in');
+				setTimeout(function(){
+					api.closeFrame();
+				},200);
+			}
+		});
+
+    initData();
+	};
+
+  function initData() {
+    api.ajax({
+        url: 'http://172.16.169.9:8081/eduonline-app/queryOfflineCourseById.json',
+        method: 'post',
+        data: {
+            values: {
+                offlineCourseId: id
+            }
+        }
+    },function(ret, err){
+        if (ret.bool) {
+            var html = '<div class="aui-card-list-header">'
+                            +'主题:'+ ret.data.title
+                        +'</div>'
+                        +'<div class="aui-card-list-content-padded">'
+                            +'<p>开始时间:'+ ret.data.startTime +'</p>'
+                            +' <p>结束时间:'+ ret.data.endTime +'</p>'
+                            +'<p>地点:'+ ret.data.place +'</p>'
+                            +'<p>详情描述:'+ ret.data.detail +'</p>'
+                        +'</div>'
+                        +'<div class="aui-card-list-footer">'
+
+                        +'</div>';
+
+            $api.html($api.dom('.aui-card-list'), html);
+
+        } else {
+            alert( JSON.stringify( ret ) );
+        }
+    });
+  }
+
+  //打开登陆页面
+  function openLogin() {
+      api.openWin({
+          name: 'login',
+          url: './login_win.html',
+          pageParam: {
+              name: 'test'
+          }
+      });
+  }
+
+</script>
+</html>

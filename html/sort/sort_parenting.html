@@ -45,19 +45,19 @@
             <li class="aui-list-item">
               <div class="aui-row-padded">
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn">知识管理</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 47)">知识管理</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn">习惯养成</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 48)">习惯养成</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn">演讲与口才</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 49)">演讲与口才</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn">个人品牌</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 50)">个人品牌</div>
                 </div>
                 <div class="aui-col-xs-3">
-                    <div class="aui-btn">思维方式</div>
+                    <div class="aui-btn" onclick="openSortDetail(this, 51)">思维方式</div>
                 </div>
               </div>
             </li>
@@ -142,5 +142,22 @@
     apiready = function(){
         api.parseTapmode();
     };
+
+    //跳转专题列表
+    function openSortDetail(el, sortId) {
+
+        //获取点击btn的内容
+        var textbtn = $api.html(el);
+
+        api.openWin({
+            name: 'sort_detail',
+            url: './sort_detail.html',
+            pageParam: {
+                textbtn: textbtn,
+                sortId: sortId
+            }
+        });
+
+    }
 </script>
 </html>

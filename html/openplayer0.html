@@ -121,7 +121,7 @@
 		//获取视频地址
 		function queryVideoUrl(videoId) {
 			api.ajax({
-			    url: 'http://172.168.1.102:8081/eduonline-app/queryVideoById.json',
+			    url: 'http://172.16.169.9:8081/eduonline-app/queryVideoById.json',
 			    method: 'post',
 			    data: {
 			        values: {
@@ -130,7 +130,7 @@
 			    }
 			},function(ret, err){
 			    if (ret.bool) {
-							var url = 'http://172.168.1.102:8081/eduonline/' + ret.data.path;
+							var url = 'http://172.16.169.9:8081/eduonline/' + ret.data.path;
 							initVideo(url);
 			    } else {
 			        alert( JSON.stringify( err ) );
