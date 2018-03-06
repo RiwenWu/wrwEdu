@@ -102,6 +102,7 @@
 <script type="text/javascript" src="../script/aui-slide.js"></script>
 <script type="text/javascript" src="../script/aui-tab.js"></script>
 <script type="text/javascript">
+var ip;
     var slide = new auiSlide({
         container:document.getElementById("aui-slide"),
         // "width":300,
@@ -152,7 +153,7 @@
     //初始化介绍
     function initIntroduce(Cid) {
       api.ajax({
-          url: 'http://172.16.169.9:8081/eduonline-app/queryCourseById.json',
+          url: ip + '/eduonline-app/queryCourseById.json',
           method: 'post',
           data: {
             values: {
@@ -163,7 +164,7 @@
           if (ret.bool) {
             //  加载封面
             var cover =  $api.dom('.aui-slide-node');
-            var html1 = '<img src="http://172.16.169.9:8081/eduonline/'+ ret.data.picurl +'"/>';
+            var html1 = '<img src="'+ ip +'/eduonline-web/'+ ret.data.picurl +'"/>';
             $api.html(cover, html1);
 
             // 加载介绍
@@ -202,7 +203,7 @@
     //初始化目录
     function initMenu(Cid) {
       api.ajax({
-          url: 'http://172.16.169.9:8081/eduonline-app/queryVideoListByCourseId.json',
+          url: ip + '/eduonline-app/queryVideoListByCourseId.json',
           method: 'post',
           data: {
               values: {
@@ -247,6 +248,7 @@
     }
 
     apiready = function(){
+        ip = $api.getStorage("ip");
         api.parseTapmode();
         //获取传递过来的courseId
         var courseId = api.pageParam.id;

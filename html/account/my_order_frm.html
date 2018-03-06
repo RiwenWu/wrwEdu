@@ -150,7 +150,9 @@
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript">
+var ip;
     apiready = function() {
+        ip = $api.getStorage("ip");
         api.parseTapmode();
         initData();
     }
@@ -173,7 +175,7 @@
     function changeDataByState(state) {
         var userId = $api.getStorage("userId");
         api.ajax({
-            url: 'http://172.16.169.9:8081/eduonline-app/queryOrderListByuserId.json',
+            url: ip + '/eduonline-app/queryOrderListByuserId.json',
             method: 'post',
             data: {
                 values: {
@@ -208,7 +210,7 @@
     function initData() {
         var userId = $api.getStorage("userId");
         api.ajax({
-            url: 'http://172.16.169.9:8081/eduonline-app/queryOrderListByuserId.json',
+            url: ip + '/eduonline-app/queryOrderListByuserId.json',
             method: 'post',
             data: {
                 values: {
@@ -241,7 +243,7 @@
 
     function initOrderList(id) {
         api.ajax({
-            url: 'http://172.16.169.9:8081/eduonline-app/queryCourseListByorderId.json',
+            url: ip + '/eduonline-app/queryCourseListByorderId.json',
             method: 'post',
             data: {
                 values: {
@@ -258,7 +260,7 @@
                     courseList += '<li class="aui-list-item aui-list-item-middle" tapmode onclick="openCourseWin('+ ret.data[i].courseId +', 1)">'
                                       +'<div class="aui-media-list-item-inner">'
                                           +'<div class="aui-list-item-media">'
-                                              +'<img src="http://172.16.169.9:8081/eduonline/'+ ret.data[i].coursePic +'"/>'
+                                              +'<img src="'+ ip +'/eduonline-web/'+ ret.data[i].coursePic +'"/>'
                                           +'</div>'
                                           +'<div class="aui-list-item-inner aui-list-item-arrow">'
                                               +'<div class="aui-list-item-text">'
@@ -339,7 +341,7 @@
       }, function(ret, err) {
           if(ret.buttonIndex == 1){
               api.ajax({
-                  url: 'http://172.16.169.9:8081/eduonline-app/updateByPrimaryKeySelective.json',
+                  url: ip + '/eduonline-app/updateByPrimaryKeySelective.json',
                   method: 'post',
                   data: {
                       values: {

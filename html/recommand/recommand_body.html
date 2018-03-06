@@ -79,8 +79,7 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/idangerous.swiper.js"></script>
 <script>
-	function emptyopt () {
-	}
+  var ip;
 
 	function openCourseWin(id, freeState)
 	{
@@ -120,7 +119,7 @@
   //初始化全部课程
   function initData(pageNumber) {
     api.ajax({
-        url: 'http://172.16.169.9:8081/eduonline-app/queryallcourseBypage.json?PAGENO=' + pageNumber,
+        url: ip + '/eduonline-app/queryallcourseBypage.json?PAGENO=' + pageNumber,
         method: 'get'
     },function(ret, err){
         if (ret.bool) {
@@ -139,7 +138,7 @@
                     html += '<div class="aui-col-xs-6" onclick="openCourseWin('+ ret.data[i].id +', '+ ret.data[i].free_state +')">'
                         +'<div class="aui-card-list">'
                             +'<div class="aui-card-list-content">'
-                                +'<img src="http://172.16.169.9:8081/eduonline-web/'+ ret.data[i].picurl +'">'
+                                +'<img src="'+ ip +'/eduonline-web/'+ ret.data[i].picurl +'">'
                             +'</div>'
                             +'<div class="aui-card-list-header aui-font-size-14">' + ret.data[i].name  + offlineCourse + freeState +'</div>'
                         +'</div>'
@@ -169,7 +168,7 @@
   //初始化精选好课
   function initCommendCourse() {
       api.ajax({
-          url: 'http://172.16.169.9:8081/eduonline-app/queryComnendCourseList.json',
+          url: ip + '/eduonline-app/queryComnendCourseList.json',
           method: 'post'
       },function(ret, err){
           if (ret.bool) {
@@ -182,7 +181,7 @@
                 html += '<div class="aui-col-xs-6" onclick="openCourseWin('+ ret.data[i].id +', '+ ret.data[i].free_state +')">'
                     +'<div class="aui-card-list">'
                         +'<div class="aui-card-list-content">'
-                            +'<img src="http://172.16.169.9:8081/eduonline-web/'+ ret.data[i].picurl +'">'
+                            +'<img src="'+ ip +'/eduonline-web/'+ ret.data[i].picurl +'">'
                         +'</div>'
                         +'<div class="aui-card-list-header aui-font-size-14">' + ret.data[i].name + freeState +'</div>'
                     +'</div>'
@@ -200,6 +199,7 @@
   }
 
 	apiready = function (){
+    ip = $api.getStorage("ip");
     var pageNo = 1;
 
     //初始化数据

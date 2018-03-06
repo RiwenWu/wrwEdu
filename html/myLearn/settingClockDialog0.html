@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <style>
+    	html,body{
+    		height: 98%;
+			background: transparent;
+			-webkit-touch-callout: none;
+			font-family: Tahoma, Geneva, sans-serif;
+			font-style: normal;
+		}
+		#dialog{
+			background-color: #e7e7e7; border-radius: 6px;
+			position: absolute; margin: auto;
+			left: 0; right: 0; top: 0; bottom: 0;
+			width: 300px; height: 225px;
+			-webkit-transition: all .1s;
+			transition:all .1s;
+			-webkit-transform: scale(0);
+			transform:scale(0);
+			opacity: 0;
+		}
+		#dialog.in{
+			-webkit-transform: scale(1);
+			transform:scale(1);
+			opacity: 1;
+		}
+		img{
+			padding:15px;
+		}
+    </style>
+</head>
+<body>
+	<div id="dialog">
+		<div class="aui-content aui-margin-b-15">
+				<ul class="aui-list aui-form-list">
+						<li class="aui-list-item">
+								<div class="aui-list-item-inner">
+										<div class="aui-list-item-label">
+												提示内容
+										</div>
+										<div class="aui-list-item-input">
+												<input type="text" placeholder="Name" id="content">
+										</div>
+								</div>
+						</li>
+						<li class="aui-list-item" tapmode onclick="setTime()">
+								<div class="aui-list-item-inner">
+										<div class="aui-list-item-label">
+												选择时间
+										</div>
+										<div class="aui-list-item-input">
+												<input type="text" placeholder="Name" disabled id="hourAndMinutes">
+										</div>
+								</div>
+						</li>
+						<li class="aui-list-item">
+								<div class="aui-list-item-inner">
+										<div class="aui-list-item-label">
+												提醒周期
+										</div>
+										<div class="aui-list-item-inner" id="daysOfWeek">
+				                <label><input class="aui-checkbox" type="checkbox" name="checkbox">日</label>
+												<label><input class="aui-checkbox" type="checkbox" name="checkbox">一</label>
+												<label><input class="aui-checkbox" type="checkbox" name="checkbox">二</label>
+												<label><input class="aui-checkbox" type="checkbox" name="checkbox">三</label>
+												<label><input class="aui-checkbox" type="checkbox" name="checkbox">四</label>
+												<label><input class="aui-checkbox" type="checkbox" name="checkbox">五</label>
+												<label><input class="aui-checkbox" type="checkbox" name="checkbox">六</label>
+				            </div>
+								</div>
+						</li>
+						<li class="aui-list-item">
+								<div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+										<div class="aui-btn aui-btn-info"  tapmode onclick="settingClock()">修改提示</div>
+										<div class="aui-btn aui-btn-danger" tapmode onclick="changeClockState()">取消提示</div>
+								</div>
+            </li>
+				</ul>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/zepto.min.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+var ip;
+var hour = '';//小时 0~23
+var minutes = '';//分钟 0~59
+var id;
+$('#dialog').addClass('in');
+
+	apiready = function(){
+		id = api.pageParam.id;
+		ip = $api.getStorage("ip");
+    api.parseTapmode();
+
+		$(document.body).on('touchend',function(e){
+			var dialog = $("#dialog")[0];
+			if(!$.contains(dialog, e.target)){
+				$('#dialog').removeClass('in');
+				setTimeout(function(){
+					api.closeFrame();
+				},200);
+			}
+		});
+
+		initData();
+	}
+
+	function initData(){
+		api.ajax({
+				url: ip + '/eduonline-app/selectByPrimaryKey.json',
+				method: 'post',
+				data: {
+						values: {
+								id: id
+						}
+				}
+		},function(ret, err){
+				if (ret.bool) {
+					$api.val($api.dom('#content'), ret.data.content );
+					hour = ret.data.hour;
+					minutes = ret.data.miuntes;
+					$api.val($api.dom('#hourAndMinutes'), hour + " : " + minutes );
+				} else {
+						alert( JSON.stringify( ret ) );
+				}
+		});
+
+	}
+
+	//设置时间
+	function setTime(){
+			//获取跳转页面传递的参数
+			id = api.pageParam.id;
+			var currentTime = new Date().toLocaleTimeString();//获取当前时间
+			api.openPicker({
+			    type: 'time',
+			    date: currentTime,
+			    title: '选择时间'
+			}, function(ret, err) {
+			    if (ret) {
+							//初始化时分
+							hour = ret.hour;
+							minutes = ret.minute;
+
+							window.console.log(JSON.stringify(ret));
+			        var hourAndMinutes = $api.dom('#hourAndMinutes');
+							window.console.log(hourAndMinutes);
+							$api.val(hourAndMinutes, ret.hour + " : " + ret.minute );
+
+			    } else {
+			        alert(JSON.stringify(err));
+			    }
+			});
+	}
+
+	//设置闹钟
+	function settingClock(){
+
+			var content = $api.dom('#content').value;
+			var daysOfweek = new Array();//周期
+			var checkboxs = $api.domAll($api.dom('#daysOfWeek'), 'input');
+			var j = 0;
+			for(var i = 0 ; i < checkboxs.length ; i++){
+					if(checkboxs[i].checked){
+							window.console.log(i);
+							daysOfweek[j] = i;
+							j++;
+					}
+			}
+			//判断是否为空
+			isEmpte(content, '请填写提示内容');
+			isEmpte(hour, '请选择时间');
+			isEmpte(minutes, '请选择时间');
+			isEmpte(daysOfweek, '请提醒周期');
+
+			api.ajax({
+			    url: ip + '/eduonline-app/setttingClock.json',
+			    method: 'post',
+			    data: {
+			        values: {
+			            id: id,
+									content: content,
+									hour: hour,
+									minutes: minutes,
+									daysOfweek: daysOfweek
+			        }
+			    }
+			},function(ret, err){
+			    if (ret.bool) {
+						api.toast({
+							msg: '设置成功',
+							duration: 2000,
+							location: 'middle'
+						});
+						setTimeout(function(){
+							api.closeFrame();
+						},2000);
+						sendReInitDataEvent();
+			    } else {
+			        alert( JSON.stringify( err ) );
+			    }
+			});
+
+	}
+
+	//判断是否为空
+	function isEmpte(obj, msg){
+			if(obj == "" || obj == null){
+				api.toast({
+					msg: msg,
+					duration: 2000,
+					location: 'middle'
+				});
+			}
+	}
+
+	function changeClockState(){
+			api.ajax({
+			    url: ip + '/eduonline-app/changeClockState.json',
+			    method: 'post',
+			    data: {
+			        values: {
+			            id: id
+			        }
+			    }
+			},function(ret, err){
+			    if (ret.bool) {
+						api.toast({
+							msg: '设置成功',
+							duration: 2000,
+							location: 'middle'
+						});
+						setTimeout(function(){
+							api.closeFrame();
+						},2000);
+						sendReInitDataEvent();
+			    } else {
+			        alert( JSON.stringify( err ) );
+			    }
+			});
+	}
+
+
+	function sendReInitDataEvent(){
+			api.sendEvent({
+			    name: 'ReInitDataEvent',
+			    extra: {
+
+			    }
+			});
+
+	}
+</script>
+</html>

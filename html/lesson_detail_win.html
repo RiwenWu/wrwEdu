@@ -19,12 +19,13 @@
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/common.js"></script>
 <script type="text/javascript">
-
+    var ip;
     //获取传递过来的courseId
     var courseId;
     var freeState;
 
     apiready = function(){
+        ip = $api.getStorage("ip");
         //获取跳转页面传递的参数
         courseId = api.pageParam.id;
         freeState = api.pageParam.freeState;
@@ -66,7 +67,7 @@
           collectionState = "1";
         }
         api.ajax({
-            url: 'http://172.16.169.9:8081/eduonline-app/changeCollection.json',
+            url: ip + '/eduonline-app/changeCollection.json',
             method: 'post',
             data: {
               values: {
@@ -100,6 +101,15 @@
                       location: 'buttom'
                   });
                 }
+
+                api.sendEvent({
+                    name: 'changeCollection',
+                    extra: {
+                        key1: 'value1',
+                        key2: 'value2'
+                    }
+                });
+
             } else {
                 alert( JSON.stringify( ret.msg ) );
             }
@@ -125,7 +135,7 @@
           joinState = "1";
         }
         api.ajax({
-            url: 'http://172.16.169.9:8081/eduonline-app/changeJoin.json',
+            url: ip + '/eduonline-app/changeJoin.json',
             method: 'post',
             data: {
               values: {
@@ -157,6 +167,15 @@
                       location: 'buttom'
                   });
                 }
+
+                api.sendEvent({
+                    name: 'joinCourse',
+                    extra: {
+                        key1: 'value1',
+                        key2: 'value2'
+                    }
+                });
+
             } else {
                 alert( JSON.stringify( ret.msg ) );
             }
@@ -217,7 +236,7 @@
     function initJoin() {
       var userId = $api.getStorage("userId");
       api.ajax({
-          url: 'http://172.16.169.9:8081/eduonline-app/queryUserJoinByIds.json',
+          url: ip + '/eduonline-app/queryUserJoinByIds.json',
           method: 'post',
           data: {
             values: {
@@ -242,7 +261,7 @@
     function initCollection() {
       var userId = $api.getStorage("userId");
       api.ajax({
-          url: 'http://172.16.169.9:8081/eduonline-app/queryUserCollectionByIds.json',
+          url: ip + '/eduonline-app/queryUserCollectionByIds.json',
           method: 'post',
           data: {
             values: {
@@ -284,7 +303,7 @@
           //在localstorage中获取userId
           var userId = $api.getStorage("userId");
           api.ajax({
-              url: 'http://172.16.169.9:8081/eduonline-app/insertCourseIntoCar.json',
+              url: ip + '/eduonline-app/insertCourseIntoCar.json',
               method: 'post',
               data: {
                   values: {

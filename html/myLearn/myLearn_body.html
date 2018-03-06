@@ -120,7 +120,9 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/common.js"></script>
 <script>
+var ip;
   apiready = function() {
+      ip = $api.getStorage("ip");
       api.parseTapmode();
       //已登陆改变头部
       if ($api.getStorage("userId") != undefined) {
@@ -129,9 +131,11 @@
       //注册监听事件
       listenLoginEven();
       listenLogoutEven();
+      listenJoinCourse();
 
       //初始化数据
       initData();
+
   }
 
   //监听是否登陆
@@ -155,6 +159,21 @@
       }
     );
   }
+
+  //监听是否有新课程添加
+  function listenJoinCourse() {
+      api.addEventListener({
+          name: 'joinCourse'
+      }, function(ret, err){
+          if( ret ){
+               initJoinCourse();
+          }else{
+               alert( JSON.stringify( err ) );
+          }
+      });
+
+  }
+
 
   //根据登陆状态改变头部
   function changeHeader() {
@@ -205,23 +224,38 @@
     }
   }
 
-  //
-  function coursePlan() {
+  //打开设置闹钟dialog
+  function coursePlan(id) {
     event.preventDefault();
     event.stopPropagation();
-    window.console.log("plan");
-    var currentdate = getNowFormatDate();
-    api.openPicker({
-        type: 'date',
-        date: currentdate,
-        title: '选择时间'
-    }, function(ret, err) {
-        if (ret) {
-            alert(JSON.stringify(ret));
-        } else {
-            alert(JSON.stringify(err));
-        }
+    api.openFrame({
+	        name: 'settingClockDialog',
+	        url: './settingClockDialog.html',
+          pageParam:{
+              id: id
+          },
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:api.winWidth,
+		        h:api.winHeight
+	        },
+	        bgColor: 'rgba(0,0,0,0.6)',
+			bounces: false
     });
+
+    //var currentdate = getNowFormatDate();
+    // api.openPicker({
+    //     type: 'time',
+    //     date: currentdate,
+    //     title: '选择时间'
+    // }, function(ret, err) {
+    //     if (ret) {
+    //         alert(JSON.stringify(ret));
+    //     } else {
+    //         alert(JSON.stringify(err));
+    //     }
+    // });
   }
 
   //获取当前时间，格式YYYY-MM-DD
@@ -254,7 +288,7 @@
       //在localstorage中获取userId
       var userId = $api.getStorage("userId");
       api.ajax({
-          url: 'http://172.16.169.9:8081/eduonline-app/queryJoinCourseListById.json',
+          url: ip + '/eduonline-app/queryJoinCourseListById.json',
           method: 'post',
           data: {
               values: {
@@ -264,11 +298,17 @@
       },function(ret, err){
           if (ret.bool) {
               var html = "";
+              var setClockHtml = '';
               if (ret.data.length == 0) {
                   html = '<div class="imgbody"><p onclick="openSearch()">去搜索感兴趣的课程 GO——></p></div>';
               } else {
                 html = '<li class="aui-list-header">正在学习</li>';
                 for (var i = 0; i < ret.data.length; i++) {
+                    if (ret.data[i].clocksetting_state == 0){
+                        setClockHtml = '<div class="aui-info-item aui-font-size-14" onclick="coursePlan('+ ret.data[i].joinPlanId +')">设置学习提醒</div>';
+                    } else {
+                        setClockHtml = '<div class="aui-info-item aui-font-size-14" tapmode onclick="getToast()">已设置</div>';
+                    }
                     html += '<li class="aui-list-item" onclick="openCourseWin(' + ret.data[i].id + ')">'
                         +'<div class="aui-media-list-item-inner">'
                             +'<div class="aui-list-item-inner">'
@@ -277,14 +317,15 @@
                                 +'</div>'
                                 +'<div class="aui-info aui-padded-b-0">'
                                     +'<div class="aui-info-item aui-font-size-12">' + ret.data[i].create_time + '</div>'
-                                    +'<div class="aui-info-item aui-font-size-14" onclick="coursePlan()">设置学习计划</div>'
+                                    + setClockHtml
                                 +'</div>'
                             +'</div>'
                             +'<div class="aui-list-item-media">'
-                                +'<img src="http://172.16.169.9:8081/eduonline/'+ ret.data[i].picurl +'">'
+                                +'<img src="'+ ip +'/eduonline-web/'+ ret.data[i].picurl +'">'
                             +'</div>'
                         +'</div>'
                     +'</li>';
+                    setClockHtml = '';
                 }
               }
               $api.html($api.dom('#learingCourseList ul') , html);
@@ -328,6 +369,18 @@
       } else {
         openLogin();
       }
+    }
+
+    //点击已设置的提示
+    function getToast(){
+        event.preventDefault();
+        event.stopPropagation();
+        api.toast({
+            msg: '请在 我的计划 线上课程中查看',
+            duration: 2000,
+            location: 'middle'
+        });
+
     }
 </script>
 </html>

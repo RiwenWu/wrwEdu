@@ -21,6 +21,7 @@
 </body>
 <script type="text/javascript" src="../script/api.js" ></script>
 <script type="text/javascript">
+var ip;
 
     function openCourseWin(id) {
       api.openWin({
@@ -46,7 +47,7 @@
     function initData(inputValue) {
 
       api.ajax({
-          url: 'http://172.16.169.9:8081/eduonline-app/findCourseByinput.json',
+          url: ip + '/eduonline-app/findCourseByinput.json',
           method: 'post',
           data: {
               values: {
@@ -66,7 +67,7 @@
                             +'</div>'
                         +'</div>'
                         +'<div class="aui-list-item-media">'
-                            +'<img src="http://172.16.169.9:8081/eduonline/'+ ret.data[i].picurl +'">'
+                            +'<img src="'+ ip +'/eduonline-web/'+ ret.data[i].picurl +'">'
                         +'</div>'
                     +'</div>'
                 +'</li>';
@@ -79,6 +80,7 @@
     }
 
     apiready = function() {
+        ip = $api.getStorage("ip");
         //获取传递过来的courseId
         var inputValue = api.pageParam.inputValue;
         api.parseTapmode();

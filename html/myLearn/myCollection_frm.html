@@ -21,7 +21,9 @@
 </body>
 <script type="text/javascript" src="../../script/api.js" ></script>
 <script type="text/javascript">
+var ip;
     function delCollection() {
+
       api.confirm({
           title: '提示',
           msg: '确定删除收藏',
@@ -56,7 +58,7 @@
       //在localstorage中获取userId
       var userId = $api.getStorage("userId");
       api.ajax({
-          url: 'http://172.16.169.9:8081/eduonline-app/queryCourseListByUserId.json',
+          url: ip + '/eduonline-app/queryCourseListByUserId.json',
           method: 'post',
           data: {
               values: {
@@ -79,7 +81,7 @@
                             +'</div>'
                         +'</div>'
                         +'<div class="aui-list-item-media">'
-                            +'<img src="http://172.16.169.9:8081/eduonline/'+ ret.data[i].picurl +'">'
+                            +'<img src="'+ ip +'/eduonline-web/'+ ret.data[i].picurl +'">'
                         +'</div>'
                     +'</div>'
                 +'</li>';
@@ -91,9 +93,29 @@
       });
     }
 
+    //监听收藏课程的变化
+    function listenCollectionCourse(){
+        api.addEventListener({
+            name: 'changeCollection'
+        }, function(ret, err){
+            if( ret ){
+                 initData();
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+
+    }
+
     apiready = function() {
+
+        ip = $api.getStorage("ip");
         api.parseTapmode();
         initData();
-      };
+
+        //监听课程收藏的变化
+        listenCollectionCourse();
+    };
+
 </script>
 </html>
