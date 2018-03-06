@@ -119,16 +119,25 @@
       }
     }
 
-    //改变加入状态
-    function changeJoin(freeState) {
+    //点击加入
+    function clickJoin(freeState) {
       if (isLogin()){
-        if(freeState == 1) {
-            openFirmOrder(""+ courseId +"");
-            return false;
-        }
-        //在localstorage中获取userId
-        var userId = $api.getStorage("userId");
-        var collectionState;
+          //在localstorage中获取userId
+          var userId = $api.getStorage("userId");
+
+          if(freeState == 1) {
+              findUserIsOwn(userId, courseId);
+          } else{
+              //改变加入状态
+              changeJoin(userId);
+          }
+      } else {
+        openLogin();
+      }
+    }
+
+    //改变加入状态
+    function changeJoin(userId){
         if (isState("join", "unjoin")) {
           joinState = "0";
         } else {
@@ -180,9 +189,31 @@
                 alert( JSON.stringify( ret.msg ) );
             }
         });
-      } else {
-        openLogin();
-      }
+    }
+
+    //判断用户是否已购买
+    function findUserIsOwn(userId, courseId){
+        api.ajax({
+            url: ip + '/eduonline-app/findUserIsOwn.json',
+            method: 'post',
+            data: {
+                values: {
+                    userId: userId,
+                    courseId: courseId
+                }
+            }
+        },function(ret, err){
+            if (ret.bool) {
+                if(ret.isOwn){
+                    changeJoin(userId);
+                }else {
+                    openFirmOrder(""+ courseId +"");
+                }
+            } else {
+                alert( JSON.stringify( err ) );
+            }
+        });
+
     }
 
     //打开确认订单页面
@@ -289,7 +320,7 @@
             +'<i class="aui-iconfont aui-icon-star aui-text-warning"></i>'
             +'<div class="aui-bar-tab-label aui-text-warning">收藏</div>'
         +'</div>'
-        +'<div class="aui-bar-tab-item aui-bg-danger aui-text-white unjoin" tapmode id="join" style="width: auto;" onclick="changeJoin('+ freeState +')">+加入学习</div>'
+        +'<div class="aui-bar-tab-item aui-bg-danger aui-text-white unjoin" tapmode id="join" style="width: auto;" onclick="clickJoin('+ freeState +')">+加入学习</div>'
         var shopCar = '<div class="aui-bar-tab-item aui-bg-warning aui-text-white" tapmode id="shopCart" style="width: auto;" onclick="putIntoShopCar()">加入购物车</div>'
         if( freeState == 1){
             html += shopCar;

@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style type="text/css">
+        .aui-list-item.wechat-top {
+            background-color: #f3f3f7;
+        }
+        .aui-list .wechat-avatar {
+            width:3rem;
+        }
+        .wechat-avatar .aui-row-padded {
+            background-color: #dddee0;
+            padding: 0.1rem;
+            border-radius: 0.2rem;
+            margin-left: -0.05rem;
+            margin-right: -0.05rem;
+        }
+        .wechat-avatar .aui-row-padded [class*=aui-col-xs-] {
+            padding: 0.05rem;
+        }
+        .wechat-avatar,
+        .wechat-avatar > img {
+            border-radius:0.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-form-list">
+            <li class="aui-list-item wechat-top">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner">
+                        支付方式
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        <input class="aui-radio" type="radio" name="radio" >
+                    </div>
+                    <div class="aui-list-item-input">
+                        微信支付
+                    </div>
+                    <div class="aui-list-item-label-icon">
+                        <img src="../image/paymethod/weixinpayLogo.jpg">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        <input class="aui-radio" type="radio" name="radio" checked="">
+                    </div>
+                    <div class="aui-list-item-input">
+                        支付宝支付
+                    </div>
+                    <div class="aui-list-item-label-icon">
+                        <img src="../image/paymethod/zhifubaologo.gif">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn" tapmode onclick="payNow()">
+                    <div class="aui-btn aui-btn-warning aui-btn-block">立即支付</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+
+    var orderId;
+    var courseIds;
+    var ip;
+
+    apiready = function() {
+      ip = $api.getStorage("ip");
+
+      orderId = api.pageParam.orderId;
+      courseIds = api.pageParam.courseIds;
+    }
+
+    //点击立即支付
+    function payNow(){
+      var payMethod;
+        var radios = $api.domAll('.aui-radio');
+        for(var i = 0; i < radios.length; i++){
+            if(radios[i].checked){
+                payMethod = i + 1;
+            }
+        }
+
+        var userId = $api.getStorage("userId");
+        api.ajax({
+            url: ip + '/eduonline-app/payNow.json',
+            method: 'post',
+            data: {
+                values: {
+                    orderId: orderId,
+                    payMethod: payMethod,
+                    userId: userId,
+                    courseIds: courseIds
+                }
+            }
+        },function(ret, err){
+            if (ret.bool) {
+                api.closeToWin({
+                    name: 'root'
+                });
+            } else {
+                alert( JSON.stringify( ret ) );
+            }
+        });
+
+    }
+
+</script>
+</html>

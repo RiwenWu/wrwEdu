@@ -34,7 +34,6 @@
         //获取跳转页面传递的参数
         var courseIds = api.pageParam.courseIds;
         listId = [courseIds];
-        window.console.log(listId);
 
         api.parseTapmode();
 
@@ -117,11 +116,23 @@
           }
       },function(ret, err){
           if (ret.bool) {
-              alert( JSON.stringify( ret ) );
+              selectPayment(ret.orderId, ret.CourseIds);
           } else {
-              alert( JSON.stringify( err ) );
+              alert( JSON.stringify( ret ) );
           }
       });
+
+    }
+
+    function selectPayment(orderId, courseIds){
+        api.openWin({
+            name: 'payMethod',
+            url: './payMethod_win.html',
+            pageParam: {
+                orderId: orderId,
+                courseIds: courseIds
+            }
+        });
 
     }
 </script>
