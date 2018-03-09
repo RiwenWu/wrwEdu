@@ -12,7 +12,7 @@
 <body>
   <section class="aui-content">
       <div class="aui-card-list">
-          <div class="aui-card-list-header aui-font-size-12 text-light">
+          <div class="aui-card-list-header aui-font-size-12 text-light" id="account">
               购买账号&nbsp;&nbsp;152****0989
           </div>
           <div class="aui-card-list-content-padded aui-padded-t-0 text-light aui-font-size-12">
@@ -62,6 +62,9 @@ var ip;
       ip = $api.getStorage("ip");
       var courses = api.pageParam.data;
       initData(courses);
+
+      $api.html($api.dom('#account'), $api.getStorage('userAccount'));
+
   }
 
   function initData(data) {

@@ -49,14 +49,14 @@
 
     <section class="aui-content">
         <ul class="aui-list aui-list-in aui-margin-b-15">
-            <li class="aui-list-item">
+            <!-- <li class="aui-list-item">
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-mail"></i>
                 </div>
                 <div class="aui-list-item-inner aui-list-item-arrow">
                     <div class="aui-list-item-title">消息中心</div>
                 </div>
-            </li>
+            </li> -->
             <li class="aui-list-item" tapmode onclick="openMyshopcar()">
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-cart"></i>
@@ -83,7 +83,7 @@
                     <div class="aui-list-item-title">设置</div>
                 </div>
             </li>
-            <li class="aui-list-item">
+            <!-- <li class="aui-list-item">
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-cert aui-text-warning"></i>
                 </div>
@@ -91,7 +91,7 @@
                     <div class="aui-list-item-title">会员卡</div>
                     <div class="aui-list-item-right">未开通</div>
                 </div>
-            </li>
+            </li> -->
         </ul>
     </section>
 
@@ -116,7 +116,6 @@
       api.addEventListener({
           name: 'changeTologin'
       }, function(ret, err) {
-          alert(JSON.stringify(ret.value));
           changeHeader();
         }
       );
@@ -127,7 +126,6 @@
         api.addEventListener({
             name: 'changeTologout'
         }, function(ret, err) {
-            alert(JSON.stringify(ret.value));
             changeHeader();
           }
         );
@@ -142,6 +140,9 @@
             if ($api.hasCls(loginedHeader,'aui-hide')) {
                 $api.removeCls(loginedHeader,'aui-hide');
                 $api.addCls(unloginHeader,'aui-hide');
+                window.console.log($api.getStorage("userName"));
+                $api.html($api.dom('.aui-font-size-18'), $api.getStorage("userName"));
+
             } else if($api.hasCls(unloginHeader,'aui-hide')) {
                 $api.removeCls(unloginHeader,'aui-hide');
                 $api.addCls(loginedHeader,'aui-hide');

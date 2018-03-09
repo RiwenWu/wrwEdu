@@ -54,7 +54,7 @@
                       <div class="aui-list-item-text text-white">
                          <div>
                              <i class="aui-iconfont aui-icon-mobile aui-font-size-18"></i>
-                             <div class="aui-list-item-text text-white aui-font-size-14">152****0989</div>
+                             <div class="aui-list-item-text text-white aui-font-size-14" id="account">152****0989</div>
                          </div>
                       </div>
                   </div>
@@ -66,7 +66,7 @@
     <div class="aui-tab" id="tab">
         <div class="aui-tab-item" tapmode onclick="openMyPlan()" >我的计划</div>
         <div class="aui-tab-item" tapmode onclick="openMyCollection()">我的收藏</div>
-        <div class="aui-tab-item" onclick="">我的下载</div>
+        <!-- <div class="aui-tab-item" onclick="">我的下载</div> -->
     </div>
     <div class="imgbody">
         <img src="../../image/myLearn/ico_user_login.png" />
@@ -143,7 +143,6 @@ var ip;
     api.addEventListener({
         name: 'changeTologin'
     }, function(ret, err) {
-        alert(JSON.stringify(ret.value));
         changeHeader();
       }
     );
@@ -154,7 +153,6 @@ var ip;
     api.addEventListener({
         name: 'changeTologout'
     }, function(ret, err) {
-        alert(JSON.stringify(ret.value));
         changeHeader();
       }
     );
@@ -183,6 +181,8 @@ var ip;
           if ($api.hasCls(loginedHeader,'aui-hide')) {
               $api.removeCls(loginedHeader,'aui-hide');
               $api.addCls(unloginHeader,'aui-hide');
+              $api.html($api.dom('#account'), $api.getStorage('userAccount'));
+
           } else if($api.hasCls(unloginHeader,'aui-hide')) {
               $api.removeCls(unloginHeader,'aui-hide');
               $api.addCls(loginedHeader,'aui-hide');

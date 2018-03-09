@@ -34,7 +34,7 @@
                         <i class="aui-iconfont aui-icon-lock"></i>
                     </div>
                     <div class="aui-list-item-input" style="width: auto;">
-                        <input type="number" id="pwd" pattern="^1[345678][0-9]{9}$" placeholder="输入密码" id="code">
+                        <input type="password" id="pwd" pattern="^1[345678][0-9]{9}$" placeholder="输入密码" id="code">
                     </div>
                     <div class="aui-list-item-label-icon">
                         <i class="aui-iconfont aui-icon-display"></i>
@@ -91,7 +91,9 @@ var ip;
         },function(ret, err){
             if (ret.bool) {
                 closeWin();
-                $api.setStorage("userId", ret.userId);
+                $api.setStorage("userId", ret.User.id);
+                $api.setStorage("userAccount", ret.User.account);
+                $api.setStorage("userName", ret.User.userName);
                 changeTologin();
             } else {
                 alert( JSON.stringify( ret.message ) );
