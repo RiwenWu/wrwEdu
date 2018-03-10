@@ -15,7 +15,9 @@ PC:下载apicloud studio---->扔进去
 <br/>
 模拟器/真机:安装对应的API load（官网找）
 <br/>
-wifi真机调试/ctrl + i    即可
+修改index.html的setStroger(好像拼错了)的ip
+<br/>
+wifi真机调试/ctrl + i   即可
 
 ### 有时间优化的话
 因为是第一次用apiCloud平台开发app
